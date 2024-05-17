@@ -1,0 +1,195 @@
+.lead {
+    font-size: 1.6rem;
+    font-weight: normal;
+}
+
+.h-1 {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.h-2 {
+    font-size: 2.75rem;
+    font-weight: 600;
+    font-family: "Scandia Stencil";
+}
+
+.h-3 {
+    font-size: 1.8rem;
+    font-family: Scandia Medium;
+}
+
+.h-4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.h-5 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.col-1 {
+    grid-column: span 1;
+}
+
+.col-2 {
+    grid-column: span 2;
+}
+
+.col-3 {
+    grid-column: span 3;
+}
+
+.col-6 {
+    grid-column: span 6;
+}
+
+.row-2 {
+    grid-row: span 2;
+}
+
+.btn-primary-outer {
+    display: inline-flex;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--primary);
+    background-color: var(--dark);
+    transition: all 100ms ease-out;
+}
+
+.btn-secondary-outer {
+    display: inline-flex;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--dark);
+    background-color: var(--primary);
+    transition: all 100ms ease-out;
+}
+
+.btn-tertiary-outer {
+    display: flex;
+    border: 1px solid var(--primary);
+    width: fit-content;
+}
+
+.btn-tertiary {
+    padding: 0.8rem 1.8rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border: 1px solid var(--primary);
+    color: var(--dark);
+    background-color: var(--primary);
+    transition: all 100ms ease-out;
+}
+
+.hide {
+    display: none !important;
+}
+
+.section-title {
+    position: relative;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+}
+
+.section-title h2 {
+    text-transform: uppercase;
+    z-index: 1;
+}
+
+.delayed {
+    transition-delay: calc(1s + .3s * var(--i)) !important;
+}
+
+/* pseudo class */
+.btn-primary-outer:hover .btn-primary {
+    transform: translate(-5px, -5px);
+    transition: all 100ms ease-out;
+}
+.btn-primary-outer:hover {
+    border: 1px solid var(--primary);
+    transition: all 100ms ease-out;
+}
+.btn-secondary-outer:hover .btn-secondary {
+    transform: translate(-5px, -5px);
+    transition: all 100ms ease-out;
+}
+.btn-secondary-outer:hover {
+    border: 1px solid var(--primary);
+    transition: all 100ms ease-out;
+}
+
+.btn-tertiary-outer:hover .btn-tertiary {
+    transform: translate(-5px, -5px);
+    transition: all 200ms ease-out;
+}
+
+.btn-tertiary-outer:hover {
+    border: 1px solid var(--primary);
+    transition: all 200ms ease-out;
+}
+
+/* pseudo element */
+.section-title::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 40%;
+    background-color: var(--complementary);
+    left: 0;
+    bottom: 0;
+}
+
+/* media query */
+@media (max-width: 600px) {
+    .btn-tertiary {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .lead {
+        font-size: 1.4rem;
+    }
+
+    .h-1 {
+        font-size: 2rem;
+    }
+
+    .h-3 {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-secondary {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}

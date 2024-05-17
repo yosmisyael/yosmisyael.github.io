@@ -1,0 +1,179 @@
+#hero {
+    margin-top: 3rem;
+    min-height: 100vh;
+    max-width: 100vw;
+    position: relative;
+}
+
+.content-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading {
+    position: relative;
+    font-family: Scandia Stencil;
+    text-transform: uppercase;
+}
+
+.heading > h1, .heading > span {
+    font-size: 15rem;
+    line-height: 12rem;
+}
+
+.heading-main {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--dark) !important;
+    transition: color 300ms;
+}
+
+.heading-outline {
+    -webkit-text-stroke: 2px #fff !important;
+    position: absolute;
+    color: transparent;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+.heading-main.first {
+    animation: fade-in-right 1s;
+}
+
+.heading-main.second, .heading-outline.second {
+    outline: 0;
+    animation: fade-in-left 1s;
+}
+
+.hero-profile {
+    position: absolute;
+    z-index: 2;
+    bottom: -5%;
+    opacity: 0;
+    animation: profile-animation 1s;
+    animation-fill-mode: forwards;
+    animation-delay: .1s;
+}
+
+.profile {
+    mask-image: linear-gradient(var(--primary) 50%, transparent);
+    height: 750px;
+    width: 562.5px;
+    display: flex;
+}
+
+.hero-intro {
+    font-size: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    opacity: 0;
+    animation: fade-in-left 1s;
+    animation-fill-mode: forwards;
+    animation-delay: .3s;
+}
+
+.ctas {
+    position: relative;
+    z-index: 3;
+}
+
+.cta-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin: .5rem;
+    justify-content: center;
+    opacity: 0;
+    animation: fade-in-up .8s;
+    animation-fill-mode: forwards;
+    animation-delay: .8s;
+}
+
+.cta-wrapper > a > i {
+    color: white;
+    font-size: 3rem;
+}
+
+/* pseudo class */
+.heading-outline:hover {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.cta-wrapper > i:hover {
+    text-shadow: 1px 1px 5px var(--dark);
+}
+
+@media (max-width: 1400px) {
+    .heading > h1, .heading > span {
+        font-size: 12rem;
+        line-height: 10rem;
+    }
+
+    .profile {
+        height: 700px;
+        width: 525px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .heading h1, .heading > span {
+        font-size: 10rem;
+        line-height: 8.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .heading h1, .heading > span {
+        font-size: 7rem;
+        line-height: 6rem;
+    }
+
+    .profile {
+        height: 600px;
+        width: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .heading h1, .heading > span {
+        font-size: 5rem;
+        line-height: 4.5rem;
+    }
+
+    .hero-intro {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .heading h1, .heading > span {
+        font-size: 3rem;
+        line-height: 3rem;
+    }
+
+    .content-wrapper {
+        justify-content: flex-start;
+        padding-top: 10rem;
+    }
+
+    .hero-profile {
+        bottom: 10%;
+    }
+
+    .profile {
+        height: 466.7px;
+        width: 350px;
+    }
+
+    .cta-wrapper > a > i {
+        text-shadow: 1px 1px 5px var(--dark);
+    }
+}

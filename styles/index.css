@@ -1,0 +1,77 @@
+@import "utils.css";
+@import "navbar.css";
+@import "hero.css";
+@import "about.css";
+@import "experience.css";
+@import "projects.css";
+@import "contact.css";
+@import "footer.css";
+@import "animation.css";
+
+@font-face {
+    font-family: Scandia;
+    src: url("../public/fonts/Scandia-Regular.woff2");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Scandia Medium;
+    src: url("../public/fonts/Scandia-Medium.woff2");
+}
+
+@font-face {
+    font-family: Scandia;
+    src: url("../public/fonts/Scandia-Bold.woff2");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Scandia Stencil;
+    src: url("../public/fonts/Scandia-Stencil.woff2");
+    font-weight: bold;
+}
+
+:root {
+    font-family: Scandia;
+    font-size: 16px;
+    --primary: #f7f7f7;
+    --secondary: #eeeeee;
+    --default: #f7f7f7;
+    --dark: #393e46;
+    --complementary: #929aab;
+    scroll-behavior: smooth;
+}
+
+/* globals */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    text-decoration: none;
+    /*border: 1px solid red;*/
+}
+
+img {
+    -webkit-user-drag: none;
+}
+
+body {
+    background-color: var(--primary);
+}
+
+ul {
+    list-style: none;
+}
+
+::-webkit-scrollbar {
+    background-color: var(--primary);
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--dark);
+    border-radius: 0.5rem;
+}
+
+

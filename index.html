@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="dist/bundle.min.css">
+    <script
+            src="https://kit.fontawesome.com/55050161ee.js"
+            crossorigin="anonymous"
+    ></script>
+    <link
+            href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.2-web/css/all.min.css"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <title>Portfolio</title>
+</head>
+<body>
+<!-- navbar -->
+<nav class="navbar" x-data="{ isActive: false, isLarge: window.screen.width >= 768 }"
+     @resize.window="isLarge = $event.target.screen.width >= 768">
+    <a href="#" class="brand">Yosev</a>
+    <ul class="navbar-nav" :class="isActive && 'menu-active'">
+        <li>
+            <a href="#about" class="nav-item" style="--i: 1" data-section="about"
+            >About</a
+            >
+        </li>
+        <li>
+            <a
+                    href="#experience"
+                    class="nav-item"
+                    style="--i: 2"
+                    data-section="experience"
+            >Experience</a
+            >
+        </li>
+        <li>
+            <a
+                    href="#projects"
+                    class="nav-item"
+                    style="--i: 3"
+                    data-section="projects"
+            >Projects</a
+            >
+        </li>
+        <li>
+            <a
+                    href="#contact"
+                    class="nav-item"
+                    style="--i: 4"
+                    data-section="contact"
+            >Contact</a
+            >
+        </li>
+    </ul>
+    <template x-if="!isLarge">
+        <div>
+            <i class="fa-solid fa-bars menu" :class="isActive && 'hide'" @click="isActive = true"></i>
+            <i class="fa-solid fa-xmark" :class="isActive || 'hide'" @click="isActive = false"></i>
+        </div>
+    </template>
+</nav>
+<!-- navbar end -->
+
+<!-- hero -->
+<section id="hero">
+    <div class="content-wrapper" x-data="{ firstHeading: false }">
+        <div class="hero-intro">
+            👋Hallo, I'm Misyael Yosevian Wiarda and I'm a
+        </div>
+        <div class="heading" @mouseenter="firstHeading = true" @mouseleave="firstHeading = false">
+            <h1 class="heading-main first" :style="firstHeading && { color: 'var(--dark)'}" >backend</h1>
+            <span class="heading-outline first" :style="firstHeading && { opacity: 1 }">backend</span>
+        </div>
+        <div class="heading">
+            <h1 class="heading-main second" :style="firstHeading || { color: 'var(--dark)'}">developer</h1>
+            <span class="heading-outline second" :style="firstHeading || { opacity: 1 }">developer</span>
+        </div>
+        <div class="hero-profile">
+            <img src="public/images/portrait-picture.webp" alt="portrait photo" class="profile" loading="eager" @mousemove.window="window.movePortrait($event, $el)"/>
+        </div>
+        <div class="ctas">
+            <div class="cta-wrapper">
+            <span class="btn-primary-outer">
+                <a href="#" class="btn-primary">Dowload CV</a>
+            </span>
+                <span class="btn-secondary-outer">
+                <a href="#contact" class="btn-secondary">Get Contact</a>
+            </span>
+            </div>
+            <div class="cta-wrapper">
+                <a href="https://github.com/yosmisyael" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/misyael-yosevian-3a0a642a7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- hero end -->
+
+<!-- about -->
+<section id="about" x-data="{show: false}" x-intersect="show = true">
+    <div class="section-title" data-section="about">
+        <p class="lead">Get to Know More</p>
+        <h2 class="h-2">About Me</h2>
+    </div>
+    <div class="feat-wrapper">
+        <div class="col-1 row-2 picture-container" style="--i: 4" x-show="show"
+             x-transition.duration.1000ms.scale.70.opacity>
+            <div class="feat-container">
+                <img
+                        src="public/images/about.webp"
+                        alt="about-me"
+                        class="about-picture feat-content"
+                        loading="lazy"
+                />
+            </div>
+        </div>
+        <div class="col-2 feat-container" style="--i: 3" x-show="show"
+             x-transition.delay.300ms.duration.1000ms.scale.70.opacity>
+            <div class="feat-content">
+                I'm currently an undergraduate student in Informatics Engineering.
+                My greatest passion is the backend realm. The thrill of crafting
+                backend applications is what fuels my passion. Implementing
+                established design patterns and writing clean, efficient code are my
+                tools of the trade, ensuring everything runs smoothly and
+                efficiently. Constantly exploring new technologies and reveling in
+                finding the best possible solutions for the problems. This portfolio
+                is a testament to my dedication.
+            </div>
+        </div>
+        <div class="col-1 feat-container" style="--i: 2" x-show="show"
+             x-transition.delay.500ms.duration.1000ms.scale.70.opacity>
+            <div class="feat-content">
+                <p><i class="fa-solid fa-graduation-cap feat-icon"></i></p>
+                <h5 class="h-5">Education</h5>
+                <span class="feat-info">
+              <i class="fa-solid fa-square"></i>
+              <p>
+                Undergrad of Informatics Engineering at Politeknik Elektronik
+                Negeri Surabaya.
+              </p>
+            </span>
+            </div>
+        </div>
+        <div class="col-1 feat-container" style="--i: 1" x-show="show"
+             x-transition.duration.1000ms.scale.70.opacity.delay.700ms>
+            <div class="feat-content">
+                <p><i class="fa-solid fa-file-certificate feat-icon"></i></p>
+                <h5 class="h-5">Acomplishment</h5>
+                <span class="feat-info">
+              <i class="fa-solid fa-square"></i>
+              <p>8th place in web cloud engineering 2023 by SEAMEO</p>
+            </span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- about end -->
+
+<!-- experience -->
+<section id="experience" x-data="{show: false}" x-intersect="show = true">
+    <div class="section-title" data-section="experience">
+        <p class="lead">Explore My</p>
+        <h2 class="h-2">Experience</h2>
+    </div>
+    <div class="exp-wrapper">
+        <div class="col-3" x-show="show" x-transition.duration.1000ms.scale.70.opacity>
+            <h4 class="h-4">Language</h4>
+            <span class="bg-icon"><i class="fa-solid fa-code"></i></span>
+            <ul>
+                <template x-for="language in $store.skill.language">
+                    <li>
+                        <i class="fa-solid fa-badge-check"></i>
+                        <span class="exp-info">
+                    <h5 class="h-5" x-text="language.name"></h5>
+                    <p x-text="language.proficiency"></p>
+                  </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+        <div class="col-3" x-show="show" x-transition.duration.1000ms.scale.70.opacity.delay.300ms>
+            <h4 class="h-4">Framework</h4>
+            <span class="bg-icon"><i class="fa-regular fa-gears"></i></span>
+            <ul>
+                <template x-for="framework in $store.skill.framework">
+                    <li>
+                        <i class="fa-solid fa-badge-check"></i>
+                        <span class="exp-info">
+                    <h5 class="h-5" x-text="framework.name"></h5>
+                    <p x-text="framework.proficiency"></p>
+                  </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+        <div class="col-3" x-show="show" x-transition.duration.1000ms.scale.70.opacity.delay.500ms>
+            <h4 class="h-4">Database</h4>
+            <span class="bg-icon"><i class="fa-regular fa-database"></i></span>
+            <ul>
+                <template x-for="database in $store.skill.database">
+                    <li>
+                        <i class="fa-solid fa-badge-check"></i>
+                        <span class="exp-info">
+                    <h5 class="h-5" x-text="database.name"></h5>
+                    <p x-text="database.proficiency"></p>
+                  </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+        <div class="col-3" x-show="show" x-transition.duration.1000ms.scale.70.opacity.delay.700ms>
+            <h4 class="h-4">Supporting Skill</h4>
+            <span class="bg-icon"><i class="fa-regular fa-server"></i></span>
+            <ul>
+                <template x-for="other in $store.skill.other">
+                    <li>
+                        <i class="fa-solid fa-badge-check"></i>
+                        <span class="exp-info">
+                    <h5 class="h-5" x-text="other.name"></h5>
+                    <p x-text="other.proficiency"></p>
+                  </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- experience end -->
+
+<!-- projects -->
+<section id="projects" x-data="{isDragged: false, initX: 0, show: false}" x-intersect="show = true">
+    <div class="section-title" data-section="projects">
+        <p class="lead">Browse My Recent</p>
+        <h2 class="h-2">Projects</h2>
+    </div>
+    <div class="projects-wrapper" @mouseenter="$event.target.style.cursor = 'grab'"
+         @mousedown="isDragged = true; initX = $event.x" @mouseup.window="isDragged = false"
+         @mouseleave="isDragged = false" :style="isDragged ? { cursor: 'grabbing' } : { cursor: 'grab' }"
+         @mousemove="if (isDragged) $event.currentTarget.scrollLeft += (initX - $event.x) / 30" x-show="show"
+         x-transition.duration.1000ms.scale.70.opacity.delay.300ms>
+        <template x-for="project in $store.projects">
+            <div class="card-wrapper">
+                <div class="card">
+                    <img
+                            src="https://source.unsplash.com/random/400x300?frontend"
+                            alt="project-thumbnail"
+                            loading="lazy"
+                    />
+                    <div class="card-info">
+                        <h3 class="h-3 card-title" x-text="project.name"></h3>
+                        <p class="card-description" x-text="project.description">
+                        </p>
+                        <p class="card-description">Explore this project at:</p>
+                        <span class="card-btn-outer">
+                            <a href="" class="card-btn" x-bind:href="project.githubUrl" target="_blank">Github</a>
+                        </span>
+                    </div>
+                    <div class="toggle-btn" x-html="project.techIcon">
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</section>
+<!-- projects end -->
+
+<!-- contact -->
+<section id="contact" x-data="{ show : false }" x-intersect="show = true">
+    <div class="section-title" data-section="contact">
+        <p class="lead">Get in Touch</p>
+        <h2 class="h-2">Contact</h2>
+    </div>
+    <div class="contact-wrapper" x-show="show" x-transition.duration.1000ms.scale.70.opacity.delay.100ms>
+        <span class="btn-tertiary-outer">
+          <a href="" class="btn-tertiary"
+          ><i class="fa-solid fa-envelope"></i> Email</a
+          >
+        </span>
+        <span class="btn-tertiary-outer">
+          <a href="https://www.linkedin.com/in/misyael-yosevian-3a0a642a7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="btn-tertiary"
+          ><i class="fa-brands fa-linkedin"></i> Linkedin</a
+          >
+        </span>
+    </div>
+</section>
+<!-- contact end -->
+
+<!-- footer -->
+<section id="footer">
+    <p>Copyright © 2024 Misyael Yosevian Wiarda. All Rights Reserved.</p>
+</section>
+<script src="dist/bundle.min.js"></script>
+</body>
+</html>
