@@ -1,26 +1,26 @@
 const projects = [
     {
         name: 'Suara Kesit',
-        description: 'News portal application for school journalist organization in SMKN 1 Plosoklaten, built with laravel frameworks.',
+        description: 'Application for a news portal for student journalism groups at SMKN 1 Plosoklaten, built with Laravel',
         imageUrl: '',
         githubUrl: 'https://github.com/yosmisyael/news-portal-kesit',
         techIcon: '<i class="devicon-laravel-original colored"></i>',
     },
     {
         name: 'Lucidnote Backend',
-        description: 'Note taking application along with todo list and many other production boost features, built with NestJS.',
+        description: 'RESTFUL API serving all Lucidnote app needs, built with NestJS.',
         imageUrl: '',
         githubUrl: 'https://github.com/yosmisyael/lucidnote-backend',
         techIcon: '<i class="devicon-nestjs-original colored"></i>',
     },{
-        name: 'Lucidnote Backend',
-        description: 'Note taking application along with todo list and many other production boost features, built with React.',
+        name: 'Lucidnote Frontend',
+        description: 'Note-taking software with a to-do list and numerous additional features to increase productivity, built with React.',
         imageUrl: '',
         githubUrl: 'https://github.com/yosmisyael/lucidnote-frontend',
         techIcon: '<i class="devicon-react-original colored"></i>',
     }, {
         name: 'Coditory Course App',
-        description: 'Course app with LMS concept providing free course on programming language, built with laravel frameworks in backend, along with react js in frontend.',
+        description: 'Course app using LMS concept provides free course on programming language, built with Laravel frameworks in backend and React in frontend.',
         imageUrl: '',
         githubUrl: 'https://github.com/yosmisyael/coditory-course-app',
         techIcon: '<i class="devicon-laravel-original colored"></i>',
