@@ -8,10 +8,16 @@ const projects = [
     },
     {
         name: 'Lucidnote Backend',
-        description: 'News taking application along with todo list and many other production boost features, built with NestJS.',
+        description: 'Note taking application along with todo list and many other production boost features, built with NestJS.',
         imageUrl: '',
         githubUrl: 'https://github.com/yosmisyael/lucidnote-backend',
         techIcon: '<i class="devicon-nestjs-original colored"></i>',
+    },{
+        name: 'Lucidnote Backend',
+        description: 'Note taking application along with todo list and many other production boost features, built with React.',
+        imageUrl: '',
+        githubUrl: 'https://github.com/yosmisyael/lucidnote-frontend',
+        techIcon: '<i class="devicon-react-original colored"></i>',
     }, {
         name: 'Coditory Course App',
         description: 'Course app with LMS concept providing free course on programming language, built with laravel frameworks in backend, along with react js in frontend.',
