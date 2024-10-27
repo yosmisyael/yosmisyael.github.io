@@ -1,86 +1,90 @@
 #experience {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-    background-color: var(--primary);
-    min-height: 100vh;
-    width: 100%;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  background-color: var(--primary);
+  min-height: 100vh;
+  margin: auto;
 }
 
-.exp-wrapper {
-    margin: 2rem auto;
-    width: 90%;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1rem;
+#experience .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: auto;
 }
 
-.exp-wrapper > div {
-    border: 1px solid var(--dark);
-    padding: 0.8rem;
-    position: relative;
-    overflow: hidden;
-    transition: all 200ms ease-out;
+#experience .container .content {
+  border: 1px solid var(--dark);
+  text-align: center;
+  transition: all 300ms ease-out;
+  padding: 1rem;
 }
 
-.exp-wrapper ul {
-    padding: 0.5rem;
+#experience .container .content svg {
+  height: 2.5rem;
+  fill: var(--dark);
 }
 
-.exp-wrapper li {
-    display: flex;
-    align-items: start;
-    gap: 1rem;
-    margin: 0.8rem 0;
+#experience h2 {
+  padding-top: 2rem;
+  text-align: center;
+}
+.carousel-container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.carousel-1 {
+  margin-top: 1rem;
+  flex-wrap: nowrap;
+  display: inline-flex;
+  justify-content: center;
+  gap: 2rem;
+  animation: scroll-right 20s linear infinite;
+}
+.carousel-2 {
+  flex-wrap: nowrap;
+  display: inline-flex;
+  justify-content: center;
+  gap: 2rem;
+  animation: scroll-left 20s linear infinite;
+}
+.carousel-1 svg,
+.carousel-2 svg {
+  height: 3rem;
 }
 
-.exp-wrapper li i {
-    font-size: 1.3rem;
-    padding-top: 0.3rem;
-}
-
-.exp-info {
-    display: block;
-}
-
-.bg-icon {
-    position: absolute;
-    font-size: 8rem;
-    color: var(--dark);
-    opacity: 0.6;
-    right: 0;
-    bottom: 0;
-    rotate: 20deg;
+.carousel-1 .icon,
+.carousel-2 .icon {
+  padding: 0.3rem;
+  font-size: 0.6rem;
+  text-align: center;
 }
 
 /* pseudo class */
-.exp-wrapper > div:hover {
-    box-shadow: 0.5rem 0.5rem var(--dark);
-    transform: translate(-5px, -5px);
-    transition: all 200ms ease-out;
+#experience .container .content:hover {
+  background-color: var(--dark);
+  transition: all 200ms ease-out;
+  color: var(--primary);
 }
-
-/* media query */
-@media (max-width: 1200px) {
-    .exp-wrapper {
-        width: 90%;
-    }
+#experience > .container > .content:hover .symbol {
+  fill: var(--primary);
+  transition: all 100ms ease-out;
 }
-
-@media (max-width: 1024px) {
-    .exp-wrapper > div {
-        grid-column: span 6;
-    }
+.carousel-1:hover {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  animation-play-state: paused;
 }
-
+.carousel-2:hover {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  animation-play-state: paused;
+}
 @media (max-width: 768px) {
-    .exp-wrapper {
-        grid-template-columns: repeat(1, 1fr);
-        width: 80%;
-    }
-}
-
-@media (max-width: 600px) {
-    .exp-wrapper {
-        width: 90%;
-    }
+  #experience .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

@@ -1,0 +1,72 @@
+.tl {
+  position: relative;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.tl::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  background: var(--dark);
+  top: 0;
+  bottom: 0;
+  margin-left: -1px;
+}
+
+.tl-container {
+  position: relative;
+}
+.tl-container::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: calc(50% - 8px);
+  right: -10px;
+  background: var(--primary);
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.tl-container.right::after {
+  left: -8px;
+}
+
+.tl-container::before {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  top: calc(50% - 1px);
+  right: 8px;
+  background: var(--dark);
+  z-index: 1;
+}
+
+.tl-container.right::before {
+  left: 8px;
+}
+
+.tl-container .content {
+  position: relative;
+}
+
+.tl-container.right .content {
+  padding: 1.2rem 0 1.2rem 90px;
+}
+
+.tl-container .content h2 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--dark);
+}
+
+.tl-container .content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 22px;
+  color: var(--dark);
+}
