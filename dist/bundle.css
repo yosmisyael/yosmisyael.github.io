@@ -57,6 +57,7 @@
   text-transform: capitalize;
   color: var(--dark);
   background-color: var(--primary);
+  border: 1px solid transparent;
   transition: all 100ms ease-out;
 }
 .btn-secondary-outer {
@@ -97,9 +98,9 @@
 .btn-primary-outer:hover .btn-primary {
   transform: translate(-5px, -5px);
   transition: all 100ms ease-out;
+  border: 1px solid var(--dark);
 }
 .btn-primary-outer:hover {
-  border: 1px solid transparent;
   transition: all 100ms ease-out;
 }
 .btn-secondary-outer:hover .btn-secondary {
@@ -116,7 +117,7 @@
   z-index: 0;
   width: 100%;
   height: 40%;
-  background-color: var(--complementary);
+  background-color: var(--focus);
   left: 0;
   bottom: 0;
 }
@@ -277,15 +278,14 @@
 
 /* styles/hero.css */
 #hero {
-  padding-top: 2rem;
-  min-height: 100vh;
-  max-width: 100vw;
+  margin-top: 4rem;
+  height: 100vh;
+  width: 100%;
   position: relative;
+  cursor: url(../public/images/cursor.png), auto;
 }
 .content-wrapper {
-  position: absolute;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -329,7 +329,7 @@
 .hero-profile {
   position: absolute;
   z-index: 2;
-  bottom: -5%;
+  bottom: -2%;
   opacity: 0;
   animation: profile-animation 1s;
   animation-fill-mode: forwards;
@@ -365,6 +365,7 @@
   animation: fade-in-up 0.8s;
   animation-fill-mode: forwards;
   animation-delay: 0.8s;
+  cursor: default;
 }
 .cta-wrapper > a > i {
   color: var(--primary);
@@ -402,7 +403,7 @@
     line-height: 8.5rem;
   }
   .profile {
-    height: 500px;
+    height: 600px;
   }
 }
 @media (max-width: 1024px) {
@@ -412,7 +413,7 @@
     line-height: 6rem;
   }
   .profile {
-    height: 700px;
+    height: 650px;
   }
   .cta-wrapper {
     width: 100%;
@@ -439,26 +440,23 @@
     height: 1rem;
   }
   .profile {
-    height: 600px;
+    height: 400px;
   }
 }
 @media (max-width: 576px) {
-  #hero {
-    overflow-x: hidden;
-  }
   .heading h1,
   .heading > span {
     font-size: 3rem;
     line-height: 3rem;
   }
   .hero-profile {
-    bottom: 10%;
+    bottom: 0;
   }
   .hero-intro {
     padding: 0 1rem;
   }
   .profile {
-    height: 520px;
+    height: 400px;
   }
 }
 
@@ -518,7 +516,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin: auto;
+  margin: 1rem auto;
 }
 #experience .container .content {
   border: 1px solid var(--dark);
@@ -530,7 +528,7 @@
   height: 2.5rem;
   fill: var(--dark);
 }
-#experience h2 {
+#experience > h2 {
   padding-top: 2rem;
   text-align: center;
 }

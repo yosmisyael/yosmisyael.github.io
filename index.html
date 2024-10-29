@@ -7,7 +7,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="dist/bundle.min.css" />
+    <link rel="stylesheet" href="dist/bundle.css" />
     <script
       src="https://kit.fontawesome.com/55050161ee.js"
       crossorigin="anonymous"
@@ -79,8 +79,8 @@
     <!-- navbar end -->
 
     <!-- hero -->
-    <section id="hero">
-      <div class="content-wrapper" x-data="{ firstHeading: false }">
+    <section id="hero" x-data="{ customCursor: false }">
+      <div class="content-wrapper" x-data="{ firstHeading: false }" @mouseenter="customCursor = true" @mouseleave="customCursor = false">
         <div class="heading-wrapper">
           <div class="hero-intro">
             <svg
@@ -342,7 +342,7 @@
         x-transition.duration.1000ms.scale.70.opacity.delay.100ms
       >
         <span class="btn-secondary-outer">
-          <a href="" class="btn-secondary"
+          <a href="mailto:yosevelian@gmail.com?subject=Lets%20Collaborate" class="btn-secondary"
             ><i class="fa-solid fa-envelope"></i> Email</a
           >
         </span>
@@ -361,6 +361,6 @@
     <section id="footer">
       <p>Copyright © 2024 Misyael Yosevian Wiarda. All Rights Reserved.</p>
     </section>
-    <script src="dist/bundle.min.js"></script>
+    <script src="dist/bundle.js"></script>
   </body>
 </html>
