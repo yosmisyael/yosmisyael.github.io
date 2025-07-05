@@ -63,7 +63,7 @@
 
     .section-header::after {
         content: attr(data-text);
-        @apply left-0.5 -bottom-0.5 absolute text-complementary-light z-0 font-sans;
+        @apply left-0.5 -bottom-0.5 absolute text-complementary-light z-0 font-sans w-full;
         @supports (-webkit-text-stroke: 0.3rem var(--color-primary)) {
             -webkit-text-stroke: 0 var(--color-primary);
         }
@@ -75,6 +75,23 @@
         @apply absolute left-0 -bottom-1/3 bg-primary h-[.1rem];
         width: var(--line-width, 0px);
     }
+
+	.section-header-icon {
+		@apply text-5xl relative font-bold font-sans z-10 text-primary col-start-2 col-span-9 h-fit;
+		@supports (-webkit-text-stroke: 0.3rem var(--color-primary)) {
+			-webkit-text-stroke: 1.5px var(--color-primary);
+			color: transparent;
+		}
+	}
+
+	.section-header-icon::after {
+		content: attr(data-text);
+		@apply left-0.5 -bottom-0.5 absolute text-complementary-light z-0 font-sans w-full;
+		@supports (-webkit-text-stroke: 0.3rem var(--color-primary)) {
+			-webkit-text-stroke: 0 var(--color-primary);
+		}
+		z-index: -1;
+	}
 
     .section-description {
         @apply col-span-9 col-start-2 text-lg font-sans font-medium;
