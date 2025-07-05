@@ -1,4 +1,25 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+
+	// determine window width
+	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
+	let isMobile: boolean = $derived(windowWidth < 1024);
+
+	onMount(() => {
+		windowWidth = window.innerWidth;
+
+		const handleResize = () => {
+			windowWidth = window.innerWidth;
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	});
+
 	let isOpen = $state(false);
 
 	function handleToggleMenu(): void {
@@ -10,7 +31,8 @@
 	<div class="flex items-center justify-between px-6 py-4 md:px-16 lg:px-32">
 		<!-- brand -->
 		<div class="relative z-50 inline-flex items-center gap-5 md:gap-10">
-			<svg
+			<a href="/" aria-label="Home">
+				<svg
 				width="198"
 				height="193"
 				viewBox="0 0 198 193"
@@ -46,6 +68,7 @@
 					stroke-width="6"
 				/>
 			</svg>
+			</a>
 
 			<!-- border -->
 			<span class="border-r-primary h-16 w-1 border-r-2 md:h-20"></span>
@@ -79,12 +102,12 @@
 			class:scale-y-100={isOpen === true}
 			class:scale-y-0={isOpen === false}
 		>
-			<li class="nav-item mt-40 delay-300 md:mt-0" class:-translate-x-[110%]={isOpen === true}>
+			<li class="nav-item mt-40 delay-300 md:mt-0" class:-translate-x-[110%]={isMobile && isOpen}>
 				<a href="/about" class="relative z-10" draggable="false" onclick={handleToggleMenu}>
 					About
 				</a>
 			</li>
-			<li class="nav-item delay-[400ms]" class:-translate-x-[110%]={isOpen === true}>
+			<li class="nav-item delay-[400ms]" class:-translate-x-[110%]={isMobile && isOpen}>
 				<a
 					href="https://medium.com"
 					class="relative z-10"
@@ -92,7 +115,7 @@
 					onclick={handleToggleMenu}>Writing</a
 				>
 			</li>
-			<li class="nav-item delay-500" class:-translate-x-[110%]={isOpen === true}>
+			<li class="nav-item delay-500" class:-translate-x-[110%]={isMobile && isOpen}>
 				<a
 					href="mailto:yosevelian@gmail.com"
 					class="relative z-10"
