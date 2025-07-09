@@ -56,7 +56,7 @@
 <main class="page-wrapper">
 	{#if !isSplashCompleted}
 		<div class="absolute top-0 right-0 bottom-0 left-0 z-50 h-screen w-full">
-			<Splash isStarted={isSplashStarted} onComplete={handleSplashComplete} />
+			<Splash isStarted={isSplashStarted} onComplete={handleSplashComplete} isCompleted={isSplashCompleted} mode="cover" />
 		</div>
 	{/if}
 

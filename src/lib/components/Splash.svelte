@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
-	let { isStarted, onComplete }: { isStarted: boolean; onComplete: () => void } = $props();
+	let { isStarted, isCompleted, onComplete, mode = 'reveal' }: { isStarted: boolean; isCompleted: boolean, onComplete: () => void, mode: 'reveal' | 'cover' } = $props();
 
 	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
 	let isMobile: boolean = $derived(windowWidth < 1024);
@@ -11,9 +11,6 @@
 
 	let barsAnimating: boolean[] = $state([]);
 	let barsRevealed: boolean[] = $state([]);
-
-	let animationComplete: boolean = $state(false);
-	let animationStarted: boolean = $state(false);
 
 	onMount(() => {
 		windowWidth = window.innerWidth;
@@ -30,43 +27,72 @@
 	});
 
 	$effect(() => {
-		if (!animationStarted) {
-			barsAnimating = Array(barCount).fill(false);
-			barsRevealed = Array(barCount).fill(false);
+		if (!isStarted) {
+			if (mode === 'reveal') {
+				barsAnimating = Array(barCount).fill(false);
+				barsRevealed = Array(barCount).fill(false);
+			} else {
+				barsAnimating = Array(barCount).fill(false);
+				barsRevealed = Array(barCount).fill(true);
+			}
 		}
 	});
 
 	$effect(() => {
-		if (!isStarted || animationComplete || animationStarted) return;
+		if (!isStarted || isCompleted) return;
 
-		animationStarted = true;
+		if (mode === 'reveal') {
+			for (let i = barCount - 1; i >= 0; i--) {
+				const delay = (barCount - 1 - i) * 100;
+				setTimeout(() => {
+					barsAnimating[i] = true;
+					barsAnimating = [...barsAnimating];
 
-		for (let i = barCount - 1; i >= 0; i--) {
-			const delay = (barCount - 1 - i) * 100;
+					setTimeout(() => {
+						barsRevealed[i] = true;
+						barsRevealed = [...barsRevealed];
 
-			setTimeout(() => {
-				barsAnimating[i] = true;
-				barsAnimating = [...barsAnimating];
+						if (i == 0) {
+							onComplete();
+						}
+					}, 200);
+				}, delay);
+			}
+		} else {
+			for (let i = 0; i < barCount; i++) {
+				const delay = i * 100;
 
 				setTimeout(() => {
-					barsRevealed[i] = true;
+					barsRevealed[i] = false;
 					barsRevealed = [...barsRevealed];
 
-					if (i == 0) {
-						onComplete();
-					}
-				}, 200);
-			}, delay);
+					setTimeout(() => {
+						barsAnimating[i] = true;
+						barsAnimating = [...barsAnimating];
+						if (i == barCount - 1) {
+							setTimeout(() => onComplete(), 500);
+						}
+					}, 200);
+				}, delay);
+			}
 		}
 	});
 </script>
 
-<div class="loading-container" class:bg-complementary-light={!isStarted}>
+<div class="loading-container">
 	{#each Array(barCount) as _, i (i)}
-		{#if !barsRevealed[i]}
-			<div class="loading-bar" class:animate={barsAnimating[i]}></div>
+		{#if mode === 'reveal'}
+			{#if !barsRevealed[i]}
+				<div class="loading-bar" class:animate={barsAnimating[i]}></div>
+			{:else}
+				<div class="revealed-section"></div>
+			{/if}
 		{:else}
-			<div class="revealed-section"></div>
+			{#if barsRevealed[i]}
+				<div class="revealed-section"></div>
+			{:else}
+				<div class="loading-bar reverse" class:animate={barsAnimating[i]}></div>
+			{/if}
 		{/if}
 	{/each}
 </div>
