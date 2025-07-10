@@ -5,42 +5,94 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { splash } from '$lib/stores/splash';
 	import Splash from '$lib/components/Splash.svelte';
+	import { goto } from '$app/navigation';
 
 	let { children } = $props();
+	let isNavigating: boolean = $state(false);
+	let currentPath: string = $state('');
+	let isInitialLoad: boolean = $state(true);
 
-	let isMounted: boolean = $state(false);
-	let isSplashStarted: boolean = $state(false);
-	let isSplashCompleted: boolean = $state(false);
-
-	const delaySplash = 600;
+	splash.startIntro();
 
 	onMount(() => {
-		isMounted = true;
+		currentPath = page.url.pathname;
 
-		const timer = setTimeout(() => {
-			isSplashStarted = true;
-		}, delaySplash);
+		const handleClick = (e: MouseEvent) => {
+			const target = e.target as HTMLElement;
+			const link = target.closest('a');
+			if (!link || isNavigating) return;
+			const href = link.getAttribute('href');
 
-		return () => clearTimeout(timer);
+			if (
+				!href ||
+				href.startsWith('http') ||
+				href.startsWith('#') ||
+				href === currentPath ||
+				href.startsWith('mailto:') ||
+				href.startsWith('tel:')
+			) return;
+
+			e.preventDefault();
+			e.stopPropagation();
+			navigateWithAnimation(href);
+		};
+
+		document.addEventListener('click', handleClick, true);
+
+		return () => {
+			document.removeEventListener('click', handleClick, true);
+		};
 	});
 
-	function disableScroll(e: WheelEvent): void {
-		if (!isSplashCompleted) {
-			e.preventDefault();
+	async function navigateWithAnimation(href: string) {
+		if (isNavigating) return;
+
+		isNavigating = true;
+
+		try {
+			splash.startOutro();
+			await waitForSplashComplete();
+			await goto(href, { replaceState: false });
+			currentPath = href;
+			splash.startIntro();
+		} catch (error) {
+			console.error('Navigation error:', error);
+		} finally {
+			isNavigating = false;
 		}
 	}
 
-	function handleSplashComplete(): void {
-		isSplashCompleted = true;
+	function waitForSplashComplete(): Promise<void> {
+		return new Promise((resolve) => {
+			if (!$splash.isActive) {
+				resolve();
+				return;
+			}
+
+			const checkInterval = setInterval(() => {
+				if (!$splash.isActive) {
+					clearInterval(checkInterval);
+					resolve();
+				}
+			}, 0.1);
+		});
 	}
 
 	$effect(() => {
-		if (!isSplashCompleted) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
+		if (isInitialLoad) {
+			isInitialLoad = false;
+			return;
 		}
+
+		if (page.url.pathname !== currentPath && !isNavigating) {
+			currentPath = page.url.pathname;
+			splash.startIntro();
+		}
+
+		if ($splash.isActive) document.body.style.overflow = 'hidden';
+		else document.body.style.overflow = '';
 	});
 </script>
 
@@ -51,18 +103,9 @@
 	}}
 />
 
-<svelte:window onwheel={disableScroll} />
-
 <main class="page-wrapper">
-	{#if !isSplashCompleted}
-		<div class="absolute top-0 right-0 bottom-0 left-0 z-50 h-screen w-full">
-			<Splash isStarted={isSplashStarted} onComplete={handleSplashComplete} isCompleted={isSplashCompleted} mode="cover" />
-		</div>
-	{/if}
-
-	{#if isMounted}
-		<Navbar />
-		{@render children()}
-		<Footer />
-	{/if}
+	<Splash />
+	<Navbar />
+	{@render children()}
+	<Footer />
 </main>

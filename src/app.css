@@ -62,7 +62,7 @@
 	}
 
 	.loading-bar {
-		@apply flex-1 origin-top bg-complementary-light transition-transform duration-300 ease-out;
+		@apply flex-1 origin-top bg-complementary-light transition-transform duration-400 ease-in-out;
 	}
 
 	.loading-bar.animate {
