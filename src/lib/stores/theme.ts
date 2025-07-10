@@ -1,32 +1,39 @@
 import { browser } from '$app/environment';
+import { writable } from 'svelte/store';
 
 function createThemeStore() {
-	let isDark: boolean = false;
+	let initialValue: boolean = false;
 
-	// Load saved preference on initialization
+	// load saved preference on initialization
 	if (browser) {
 		const savedTheme: string | null = localStorage.getItem('theme');
-		isDark = savedTheme === 'dark';
-		updateThemeClass();
+		initialValue = savedTheme === 'dark';
+		updateThemeClass(initialValue);
 	}
+
+	const { subscribe, update } = writable(initialValue);
 
 	function toggle() {
-		isDark = !isDark;
-		if (browser) {
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-			updateThemeClass();
-		}
+		update(isDark => {
+			const newValue = !isDark;
+			if (browser) {
+				localStorage.setItem('theme', newValue ? 'light' : 'dark');
+				updateThemeClass(newValue);
+			}
+			return newValue;
+		});
 	}
 
-	function updateThemeClass() {
+	function updateThemeClass(isDark: boolean) {
 		if (browser) {
 			document.documentElement.classList.toggle('dark', isDark);
 		}
 	}
 
 	return {
+		subscribe,
 		toggle
 	};
 }
 
-export const theme: { toggle: () => void } = createThemeStore();
+export const theme = createThemeStore();
