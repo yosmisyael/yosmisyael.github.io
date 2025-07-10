@@ -166,6 +166,12 @@
 			</li>
 		</ul>
 
-		<button class="toggle-text relative z-40 md:hidden" onclick={mobileMenu.toggle}>Menu</button>
+		<button class="toggle-text relative z-40 md:hidden"
+						class:text-primary-dark={!$theme}
+						class:text-primary={$theme}
+						onclick={mobileMenu.toggle}
+		>
+			Menu
+		</button>
 	</div>
 </nav>

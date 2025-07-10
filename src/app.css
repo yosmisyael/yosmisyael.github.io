@@ -26,7 +26,7 @@
 @layer components {
 	/* core */
 	.toggle-text {
-		@apply text-primary font-raleway cursor-pointer text-xl font-bold transition-all duration-100 ease-in;
+		@apply font-raleway cursor-pointer text-xl font-bold transition-all duration-100 ease-in;
 	}
 
 	.toggle-text:hover {
