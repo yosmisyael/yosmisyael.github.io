@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import { theme } from '$lib/stores/theme';
 
 	// determine window width
 	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
@@ -102,7 +103,11 @@
 			class:scale-y-100={$mobileMenu === true}
 			class:scale-y-0={$mobileMenu === false}
 		>
-			<li class="nav-item mt-40 delay-300 md:mt-0" class:-translate-x-[110%]={isMobile && $mobileMenu}>
+			<li class="nav-item mt-40 delay-300 md:mt-0"
+					class:-translate-x-[110%]={isMobile && $mobileMenu}
+					class:text-primary-dark={!$theme}
+					class:text-primary={$theme}
+			>
 				<a href="/about" class="relative z-10" draggable="false">
 					About
 				</a>
@@ -121,7 +126,11 @@
 					</span>
 				{/if}
 			</li>
-			<li class="nav-item delay-[400ms]" class:-translate-x-[110%]={isMobile && $mobileMenu}>
+			<li class="nav-item delay-[400ms]"
+					class:-translate-x-[110%]={isMobile && $mobileMenu}
+					class:text-primary-dark={!$theme}
+					class:text-primary={$theme}
+			>
 				<a
 					href="https://medium.com"
 					class="relative z-10"
@@ -143,7 +152,11 @@
 					</span>
 				{/if}
 			</li>
-			<li class="nav-item delay-500" class:-translate-x-[110%]={isMobile && $mobileMenu}>
+			<li class="nav-item delay-500"
+					class:-translate-x-[110%]={isMobile && $mobileMenu}
+					class:text-primary-dark={!$theme}
+					class:text-primary={$theme}
+			>
 				<a
 					href="mailto:yosevelian@gmail.com"
 					class="relative z-10"

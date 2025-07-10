@@ -93,7 +93,7 @@
 	}
 
 	.nav-item {
-		@apply text-primary font-raleway relative left-[110%] text-4xl font-bold transition-all duration-300 ease-out md:left-0 md:text-2xl md:font-semibold;
+		@apply font-raleway relative left-[110%] text-4xl font-bold transition-all duration-300 ease-out md:left-0 md:text-2xl md:font-semibold;
 	}
 
 	.nav-item-decorator {
