@@ -102,7 +102,7 @@
 		</div>
 		<div class="card-body">
 			<p class="text-md">{description}</p>
-			<p class="inline-flex gap-3">
+			<p class="flex gap-3 flex-wrap">
 				{#each technologies as tech, key (key)}
 					<span class="font-mono text-sm font-semibold">{tech}</span>
 				{/each}
