@@ -15,9 +15,9 @@ function createThemeStore() {
 
 	function toggle() {
 		update(isDark => {
-			const newValue = !isDark;
+			const newValue: boolean = !isDark;
 			if (browser) {
-				localStorage.setItem('theme', newValue ? 'light' : 'dark');
+				localStorage.setItem('theme', newValue ? 'dark' : 'light');
 				updateThemeClass(newValue);
 			}
 			return newValue;
