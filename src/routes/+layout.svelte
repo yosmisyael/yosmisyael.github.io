@@ -5,6 +5,8 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import { mobileMenu } from '$lib/stores/menu';
+	import { theme } from '$lib/stores/theme';
 	import { splash } from '$lib/stores/splash';
 	import Splash from '$lib/components/Splash.svelte';
 	import { goto } from '$app/navigation';
@@ -51,9 +53,11 @@
 
 		isNavigating = true;
 
+
 		try {
 			splash.startOutro();
 			await waitForSplashComplete();
+			if ($mobileMenu) mobileMenu.toggle();
 			await goto(href, { replaceState: false });
 			currentPath = href;
 			splash.startIntro();
@@ -103,9 +107,19 @@
 	}}
 />
 
+<svelte:head>
+	<script>
+		document.documentElement.classList.toggle(
+			"dark",
+			localStorage.theme === "dark" ||
+			(!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+		);
+	</script>
+</svelte:head>
+
 <main class="page-wrapper">
 	<Splash />
-	<Navbar />
+	<Navbar toggleTheme={theme.toggle} {mobileMenu} />
 	{@render children()}
 	<Footer />
 </main>

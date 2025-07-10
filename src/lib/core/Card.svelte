@@ -85,7 +85,7 @@
 			<div class="inline-flex items-center gap-4">
 				<Project />
 				<span
-					class="group-hover:bg-complementary-light bg-primary-light font-raleway rounded-full border-[1.5px] px-2 py-1 text-xs font-medium"
+					class="group-hover:bg-complementary-light  font-raleway rounded-full border-[1.5px] px-2 py-1 text-xs font-medium"
 				>
 					{type}
 				</span>

@@ -5,17 +5,28 @@
 	--color-primary: #6400ff;
 	--color-primary-light: #e0ccff;
 	--color-primary-dark: #4600b3;
-	--color-secondary: #9bff00;
+	--color-primary-shades-20: #8333FF;
+	--color-primary-shades-60: #C199FF;
 	--color-background: #f5f2fa;
 	--color-complementary-light: #faccff;
 	--font-raleway: 'Raleway', sans-serif;
 	--font-sans: 'PT Sans', sans-serif;
 }
 
+.dark {
+	--color-primary: #9BFF00;
+	--color-primary-light: #EBFFCC;
+	--color-primary-dark: #7CCC00;
+	--color-primary-shades-20: #afff33;
+	--color-primary-shades-60: #d7ff99;
+	--color-background: #1F3300;
+	--color-complementary-light: #3e6600;
+}
+
 @layer components {
 	/* core */
 	.toggle-text {
-		@apply text-primary-dark font-raleway cursor-pointer text-xl font-bold transition-all duration-100 ease-in;
+		@apply text-primary font-raleway cursor-pointer text-xl font-bold transition-all duration-100 ease-in;
 	}
 
 	.toggle-text:hover {
@@ -62,7 +73,7 @@
 	}
 
 	.loading-bar {
-		@apply flex-1 origin-top bg-complementary-light transition-transform duration-400 ease-in-out;
+		@apply flex-1 origin-top bg-primary-shades-60 transition-transform duration-400 ease-in-out;
 	}
 
 	.loading-bar.animate {
@@ -82,12 +93,11 @@
 	}
 
 	.nav-item {
-		@apply text-primary-dark font-raleway relative left-[110%] text-4xl font-bold transition-transform duration-300 ease-out md:left-0 md:text-2xl md:font-semibold;
+		@apply text-primary font-raleway relative left-[110%] text-4xl font-bold transition-all duration-300 ease-out md:left-0 md:text-2xl md:font-semibold;
 	}
 
-	.nav-item::after {
-		content: url("data:image/svg+xml,%3Csvg width='90' height='27' viewBox='0 0 90 27' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.803711 27H0V24.9141L19.6592 0H22.1074L0.803711 27ZM7.80371 27H5.35449L26.6592 0H29.1074L7.80371 27ZM14.8037 27H12.3545L33.6592 0H36.1084L14.8037 27ZM21.8037 27H19.3545L40.6592 0H43.1074L21.8037 27ZM28.8037 27H26.3545L47.6592 0H50.1074L28.8037 27ZM35.8037 27H33.3545L54.6592 0H57.1084L35.8037 27ZM42.8037 27H40.3545L61.6592 0H64.1074L42.8037 27ZM49.8037 27H47.3545L68.6592 0H71.1074L49.8037 27ZM56.8037 27H54.3545L75.6592 0H78.1084L56.8037 27ZM63.8037 27H61.3545L82.6592 0H85.1074L63.8037 27ZM90 2.6709L70.8037 27H68.3545L89.6582 0H90V2.6709ZM90 11.542L77.8037 27H75.3545L90 8.43848V11.542ZM90 20.4141L84.8037 27H82.3545L90 17.3096V20.4141ZM90 27H89.3545L90 26.1816V27ZM0 19.1465V16.043L12.6592 0H15.1084L0 19.1465ZM0 10.2754V7.17188L5.65918 0H8.10742L0 10.2754ZM0 1.40332V0H1.10742L0 1.40332Z' fill='%23faccff'/%3E%3C/svg%3E");
-		@apply absolute -bottom-2/5 left-1/2 -translate-x-1/2 scale-y-100 bg-transparent transition-all duration-300 ease-in-out;
+	.nav-item-decorator {
+		@apply absolute bottom-0 left-1/2 -translate-x-1/2 scale-y-100 bg-transparent transition-all duration-300 ease-in-out;
 	}
 
 	.nav-item:hover::after {
