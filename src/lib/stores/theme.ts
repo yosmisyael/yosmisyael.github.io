@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
+import { splash } from '$lib/stores/splash';
 
 function createThemeStore() {
 	let initialValue: boolean = false;
@@ -13,7 +14,11 @@ function createThemeStore() {
 
 	const { subscribe, update } = writable(initialValue);
 
-	function toggle() {
+	async function toggle() {
+		splash.startOutro();
+
+		await waitForSplashComplete();
+
 		update(isDark => {
 			const newValue: boolean = !isDark;
 			if (browser) {
@@ -22,12 +27,30 @@ function createThemeStore() {
 			}
 			return newValue;
 		});
+
+		splash.startIntro();
 	}
 
 	function updateThemeClass(isDark: boolean) {
 		if (browser) {
 			document.documentElement.classList.toggle('dark', isDark);
 		}
+	}
+
+	function waitForSplashComplete(): Promise<void> {
+		return new Promise((resolve) => {
+			if (!splash.isActive) {
+				resolve();
+				return;
+			}
+
+			const checkInterval = setInterval(() => {
+				if (!splash.isActive) {
+					clearInterval(checkInterval);
+					resolve();
+				}
+			}, 0.001);
+		});
 	}
 
 	return {
