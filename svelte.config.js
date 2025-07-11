@@ -10,7 +10,7 @@ const config = {
 	kit: {
 		adapter: adapter({
 			pages: 'build',
-			assets: 'build/assets',
+			assets: 'build',
 			fallback: '404.html'
 		}),
 	},
