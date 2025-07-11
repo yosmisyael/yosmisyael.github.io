@@ -2,6 +2,7 @@
 	import Button from '$lib/core/Button.svelte';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { Motion } from 'svelte-motion';
 
 	// determine window width
 	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
@@ -22,49 +23,11 @@
 	});
 
 	let logoContainer: HTMLDivElement;
-	let logo: HTMLDivElement;
+	let logo = $state<HTMLDivElement>();
 	let isHovering = false;
-	let idleAnimationId: number;
-
-	// Idle animation parameters
-	let idleTime = 0;
-
-	function startIdleAnimation() {
-		if (isHovering) return;
-
-		const animate = (timestamp: number) => {
-			idleTime = timestamp * 0.001; // Convert to seconds
-
-			const floatX = Math.sin(idleTime * 0.8) * 3; // 3 degrees max
-			const floatY = Math.cos(idleTime * 0.6) * 2; // 2 degrees max
-			const floatZ = Math.sin(idleTime * 0.4); // 1 degree max
-
-			if (logo && !isHovering) {
-				logo.style.transform = `
-                    rotateX(${floatY}deg)
-                    rotateY(${floatX}deg)
-                    rotateZ(${floatZ}deg)
-                    translateZ(10px)
-                `;
-			}
-
-			if (!isHovering) {
-				idleAnimationId = requestAnimationFrame(animate);
-			}
-		};
-
-		idleAnimationId = requestAnimationFrame(animate);
-	}
-
-	function stopIdleAnimation() {
-		if (idleAnimationId) {
-			cancelAnimationFrame(idleAnimationId);
-		}
-	}
 
 	function handleMouseEnter() {
 		isHovering = true;
-		stopIdleAnimation();
 	}
 
 	function handleMouseLeave() {
@@ -74,13 +37,6 @@
 		if (logo) {
 			logo.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(10px)';
 		}
-
-		// Resume idle animation after a short delay
-		setTimeout(() => {
-			if (!isHovering) {
-				startIdleAnimation();
-			}
-		}, 300);
 	}
 
 	function handleMouseMove(e: MouseEvent) {
@@ -114,15 +70,14 @@
 		}
 	}
 
-	onMount(() => {
-		// Start idle animation when component mounts
-		startIdleAnimation();
+	let hasMounted = $state(false);
 
-		// Add global mouse move listener for smooth tracking
+	onMount(() => {
+		hasMounted = true;
+
 		document.addEventListener('mousemove', handleMouseMove);
 
 		return () => {
-			stopIdleAnimation();
 			document.removeEventListener('mousemove', handleMouseMove);
 		};
 	});
@@ -133,30 +88,112 @@
 <section
 	class="flex min-h-screen flex-col items-center overflow-hidden select-none lg:grid lg:grid-cols-11"
 >
+	<!-- heading section	-->
 	<div
 		class="relative order-2 flex flex-col justify-center gap-5 text-center lg:col-span-4 lg:col-start-2 lg:text-left"
 	>
-		<h1 class="text-primary font-sans text-4xl sm:text-5xl font-extrabold md:text-6xl lg:text-5xl xl:text-6xl">
-			<span class="text-primary-dark">Hi, I am</span><br /> Misyael Yosevian.
-		</h1>
-		<h3
-			class="text-primary-dark font-sans text-xl sm:text-2xl font-semibold md:text-3xl lg:text-[1.3rem] xl:text-3xl"
+		<!--	heading	-->
+		<Motion
+			initial={{
+				y: 40,
+				opacity: 0,
+			}}
+			animate={{
+				y: 0,
+				opacity: 1,
+			}}
+			transition={{
+				duration: .4,
+				ease: 'easeOut',
+				delay: 1,
+			}}
+			let:motion
 		>
-			Software Engineer, Backend Developer
-		</h3>
-		<p
-			class="text-primary-dark px-12 font-sans text-base sm:text-lg md:px-30 md:text-xl lg:px-0 lg:text-lg xl:text-2xl"
+			<h1 use:motion class="text-primary font-sans text-4xl sm:text-5xl font-extrabold md:text-6xl lg:text-5xl xl:text-6xl">
+				<span class="text-primary-dark">Hi, I am</span><br /> Misyael Yosevian.
+			</h1>
+		</Motion>
+
+		<!--	sub heading	-->
+		<Motion
+			initial={{
+				y: -30,
+				opacity: 0,
+			}}
+			animate={{
+				y: 0,
+				opacity: 1,
+			}}
+			transition={{
+				duration: .4,
+				ease: 'easeOut',
+				delay: 1.1,
+			}}
+			let:motion
 		>
-			I <b>architect and engineer</b> robust, scalable, and efficient <b>backend systems</b> designed
-			to solve real-world problems at scale.
-		</p>
-		<!-- <p class="text-lg">Engineering global solutions from the heart of Southeast Asia.</p> -->
-		<Button href="#expertise" content="Let's dive in" position={isMobile ? 'center' : 'left'} />
+			<h3
+				use:motion
+				class="text-primary-dark font-sans text-xl sm:text-2xl font-semibold md:text-3xl lg:text-[1.3rem] xl:text-3xl"
+			>
+				Software Engineer, Backend Developer
+			</h3>
+		</Motion>
+
+		<!--	description	-->
+		<Motion
+			initial={{
+				y: -30,
+				opacity: 0,
+			}}
+			animate={{
+				y: 0,
+				opacity: 1,
+			}}
+			transition={{
+				duration: .4,
+				ease: 'easeOut',
+				delay: 1,
+			}}
+			let:motion
+		>
+			<p
+				use:motion
+				class="text-primary-dark px-12 font-sans text-base sm:text-lg md:px-30 md:text-xl lg:px-0 lg:text-lg xl:text-2xl"
+			>
+				I <b>architect and engineer</b> robust, scalable, and efficient <b>backend systems</b> designed
+				to solve real-world problems at scale.
+			</p>
+		</Motion>
+
+		<!--	CTA	-->
+		<Motion
+			initial={{
+				scale: 0,
+				opacity: 0,
+			}}
+			animate={{
+				scale: 1,
+				opacity: 1,
+			}}
+			transition={{
+				duration: .4,
+				ease: 'easeOut',
+				delay: 1.4,
+				type: 'spring',
+				stiffness: 400,
+				damping: 25,
+			}}
+			let:motion>
+			<div use:motion>
+				<Button href="#expertise" content="Let's dive in" position={isMobile ? 'center' : 'left'} />
+			</div>
+		</Motion>
+
+		<!--	decorative element start	-->
 		<svg
 			width="95"
 			height="150"
 			viewBox="0 0 95 150"
-			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			class="absolute -translate-x-12"
 		>
@@ -170,7 +207,6 @@
 			width="95"
 			height="150"
 			viewBox="0 0 95 150"
-			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			class="absolute right-[-15%] sm:right-0 translate-y-12 rotate-90"
 		>
@@ -180,7 +216,10 @@
 				fill-opacity="0.3"
 			/>
 		</svg>
+		<!--	decorative element	end -->
 	</div>
+
+	<!-- interactive element	-->
 	<div
 		class="logo-container mt-32 flex w-full items-center justify-center lg:order-2 lg:col-span-5 lg:mt-0 lg:h-full"
 		bind:this={logoContainer}
@@ -188,42 +227,63 @@
 		onmouseleave={handleMouseLeave}
 		role="application"
 	>
-		<div bind:this={logo} class="logo">
-			<svg
-				viewBox="0 0 197 193"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-44 sm:h-72 w-auto md:h-96 lg:h-72 xl:h-96"
+		{#if hasMounted}
+			<Motion
+				initial={{
+					scale: 0,
+				}}
+				animate={{
+					scale: 1,
+				}}
+				transition={{
+					type: 'spring',
+					stiffness: 600,
+					damping: 8,
+					delay: 1.3
+				}}
+				let:motion
 			>
-				<path
-					class="fill-complementary-light"
-					d="M100.5 7.03572L121.862 44.0357L46.8064 174.036L4 174.036L100.5 7.03572Z"
-				/>
-				<path
-					class="fill-complementary-light"
-					d="M159.5 7.03572L180.862 44.0357L105.806 174.036L63 174.036L159.5 7.03572Z"
-				/>
-				<path
-					class="fill-complementary-light"
-					d="M159.043 109.071L137.681 146.072L154 174.337L196.806 174.337L159.043 109.071Z"
-				/>
-				<path
-					d="M115.553 37.0347L41.6516 165.036L3.46544 165.035L96.4988 4.03362L115.553 37.0347Z"
-					class="stroke-primary"
-					stroke-width="4"
-				/>
-				<path
-					d="M174.553 37.0347L100.652 165.036L62.4654 165.035L155.499 4.03362L174.553 37.0347Z"
-					class="stroke-primary"
-					stroke-width="4"
-				/>
-				<path
-					d="M135.99 139.07L151.155 165.336L189.339 165.336L155.045 106.068L135.99 139.07Z"
-					class="stroke-primary"
-					stroke-width="4"
-				/>
-			</svg>
-		</div>
+				<div
+					use:motion
+					bind:this={logo}
+					class="logo"
+				>
+					<svg
+						viewBox="0 0 197 193"
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-44 sm:h-72 w-auto md:h-96 lg:h-72 xl:h-96 fill-transparent"
+					>
+						<path
+							class="fill-complementary-light"
+							d="M100.5 7.03572L121.862 44.0357L46.8064 174.036L4 174.036L100.5 7.03572Z"
+						/>
+						<path
+							class="fill-complementary-light"
+							d="M159.5 7.03572L180.862 44.0357L105.806 174.036L63 174.036L159.5 7.03572Z"
+						/>
+						<path
+							class="fill-complementary-light"
+							d="M159.043 109.071L137.681 146.072L154 174.337L196.806 174.337L159.043 109.071Z"
+						/>
+						<path
+							d="M115.553 37.0347L41.6516 165.036L3.46544 165.035L96.4988 4.03362L115.553 37.0347Z"
+							class="stroke-primary"
+							stroke-width="4"
+						/>
+						<path
+							d="M174.553 37.0347L100.652 165.036L62.4654 165.035L155.499 4.03362L174.553 37.0347Z"
+							class="stroke-primary"
+							stroke-width="4"
+						/>
+						<path
+							d="M135.99 139.07L151.155 165.336L189.339 165.336L155.045 106.068L135.99 139.07Z"
+							class="stroke-primary"
+							stroke-width="4"
+						/>
+					</svg>
+				</div>
+			</Motion>
+		{/if}
 	</div>
 </section>
 

@@ -111,7 +111,7 @@
 	<script>
 		document.documentElement.classList.toggle(
 			"dark",
-			(("theme" in localStorage)) ||
+			(("theme" in localStorage)) &&
 			localStorage.theme === "dark"
 		);
 	</script>
