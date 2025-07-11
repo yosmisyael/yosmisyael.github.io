@@ -52,7 +52,7 @@
 
 	/* components */
 	.page-wrapper {
-		@apply bg-background relative m-2 min-h-screen select-none md:m-4;
+		@apply bg-background relative m-2 min-h-screen select-none md:m-4 overflow-hidden;
 	}
 
 	.page-wrapper::before {

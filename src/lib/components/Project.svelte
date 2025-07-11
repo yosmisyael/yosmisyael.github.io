@@ -16,7 +16,7 @@
 		viewBox="0 0 340 64"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		class="absolute top-0 right-[-80%] md:right-0"
+		class="absolute top-0 right-[-70%] md:right-0"
 	>
 		<mask
 			id="mask0_44_357"

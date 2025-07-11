@@ -21,7 +21,7 @@
 		viewBox="0 0 64 340"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		class="absolute top-0"
+		class="absolute top-0 left-[-7%] sm:left-0"
 	>
 		<mask
 			id="mask0_44_356"
