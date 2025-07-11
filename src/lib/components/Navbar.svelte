@@ -30,7 +30,7 @@
 	<div class="flex items-center justify-between px-6 py-4 md:px-16 lg:px-32">
 		<!-- brand -->
 		<div class="relative z-50 inline-flex items-center gap-5 md:gap-10">
-			<a href="/" aria-label="Home" onclick={mobileMenu.toggle}>
+			<a href="/" aria-label="Home" onclick={() => $mobileMenu && mobileMenu.close() }>
 				<svg
 					width="198"
 					height="193"
