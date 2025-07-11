@@ -38,7 +38,7 @@
 	}
 
 	.button > span {
-		@apply font-raleway text-primary border-primary relative z-20 flex w-fit rounded-md border-[.2rem] px-8 py-3 text-xl font-semibold transition-all duration-300 ease-in-out;
+		@apply font-raleway text-primary border-primary relative z-20 flex w-fit rounded-md border-[2px] sm:border-[.2rem] px-8 py-3 text-lg sm:text-xl font-semibold transition-all duration-300 ease-in-out;
 	}
 
 	.button::before {

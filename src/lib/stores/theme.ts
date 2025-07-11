@@ -49,7 +49,7 @@ function createThemeStore() {
 					clearInterval(checkInterval);
 					resolve();
 				}
-			}, 0.001);
+			}, 0.1);
 		});
 	}
 

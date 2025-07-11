@@ -4,7 +4,7 @@ export const projects: ProjectProp[] = [
 	{
 		id: 1,
 		name: 'Open Music API',
-		type: 'RESTFUL API',
+		type: 'RESTful API',
 		description:
 			'Architected and developed a robust, scalable music management API from the ground up.',
 		imageUrl: 'public/images/pattern.webp',
@@ -20,7 +20,7 @@ export const projects: ProjectProp[] = [
 	{
 		id: 2,
 		name: 'Suara Kesit',
-		type: 'Fullstack Application',
+		type: 'Fullstack',
 		description:
 			'Application for a news portal for student journalism groups at SMKN 1 Plosoklaten, built with Laravel',
 		imageUrl: 'public/images/suara_kesit.png',
@@ -34,7 +34,7 @@ export const projects: ProjectProp[] = [
 	{
 		id: 3,
 		name: 'Lucidnote Backend',
-		type: 'RESTFUL API',
+		type: 'RESTful API',
 		description: 'RESTFUL API serving all Lucidnote app needs, built with NestJS.',
 		imageUrl: 'public/images/pattern.webp',
 		repoUrl: 'https://github.com/yosmisyael/lucidnote-backend',
@@ -46,7 +46,7 @@ export const projects: ProjectProp[] = [
 	{
 		id: 4,
 		name: 'Lucidnote Frontend',
-		type: 'Web Application',
+		type: 'Frontend App',
 		description:
 			'Note-taking software with a to-do list and numerous additional features to increase productivity, built with React.',
 		imageUrl: 'public/images/lucidnote.png',

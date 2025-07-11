@@ -136,16 +136,16 @@
 	<div
 		class="relative order-2 flex flex-col justify-center gap-5 text-center lg:col-span-4 lg:col-start-2 lg:text-left"
 	>
-		<h1 class="text-primary font-sans text-5xl font-extrabold md:text-6xl lg:text-5xl xl:text-6xl">
+		<h1 class="text-primary font-sans text-4xl sm:text-5xl font-extrabold md:text-6xl lg:text-5xl xl:text-6xl">
 			<span class="text-primary-dark">Hi, I am</span><br /> Misyael Yosevian.
 		</h1>
 		<h3
-			class="text-primary-dark font-sans text-2xl font-semibold md:text-3xl lg:text-[1.3rem] xl:text-3xl"
+			class="text-primary-dark font-sans text-xl sm:text-2xl font-semibold md:text-3xl lg:text-[1.3rem] xl:text-3xl"
 		>
 			Software Engineer, Backend Developer
 		</h3>
 		<p
-			class="text-primary-dark px-12 font-sans text-lg md:px-30 md:text-xl lg:px-0 lg:text-lg xl:text-2xl"
+			class="text-primary-dark px-12 font-sans text-base sm:text-lg md:px-30 md:text-xl lg:px-0 lg:text-lg xl:text-2xl"
 		>
 			I <b>architect and engineer</b> robust, scalable, and efficient <b>backend systems</b> designed
 			to solve real-world problems at scale.
@@ -193,7 +193,7 @@
 				viewBox="0 0 197 193"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
-				class="h-72 w-auto md:h-96 lg:h-72 xl:h-96"
+				class="h-40 sm:h-72 w-auto md:h-96 lg:h-72 xl:h-96"
 			>
 				<path
 					class="fill-complementary-light"
