@@ -2,12 +2,101 @@
 	import skills from '$lib/data/skill';
 	import { setWidth } from '$lib/utils/helper';
 	import ListItem from '$lib/core/ListItem.svelte';
+	import { inview, type Options } from 'svelte-inview';
+	import { Motion } from 'svelte-motion';
+	import type { ScrollDirection } from 'svelte-inview';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+
+	// calculating screen width
+	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
+	let isMobile: boolean = $derived(windowWidth < 1024);
+
+	onMount(() => {
+		windowWidth = window.innerWidth;
+
+		const handleResize = () => {
+			windowWidth = window.innerWidth;
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	});
+
+	// observer
+	let isInView = $state<boolean>(false);
+	let scrollDirection = $state<ScrollDirection>();
+	const options = $derived<Options>({
+		rootMargin: !isMobile ? '-400px' : '-150px',
+		unobserveOnEnter: true
+	});
+
+	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) => {
+		isInView = detail.inView;
+		scrollDirection = detail.scrollDirection;
+	};
 </script>
 
 <section class="relative">
-	<div class="text-primary-dark relative z-10 grid grid-cols-11 gap-8 px-4" id="expertise">
-		<h1 class="section-header" data-text="Expertise." use:setWidth>Expertise.</h1>
-		<p class="section-description">Areas I've been working on over the last few years.</p>
+	<div
+		class="text-primary-dark relative z-10 grid grid-cols-11 gap-8 px-4"
+		id="expertise"
+		use:inview={options}
+		oninview_change={handleChange}
+	>
+		<!--	heading content	-->
+		<Motion
+			initial={{
+				opacity: 0,
+				x: isInView ? (scrollDirection?.vertical === 'down' ? 200 : 200) : 0,
+				scale: 0.8
+			}}
+			animate={{
+				opacity: isInView ? 1 : 0,
+				x: isInView ? 0 : 120,
+				scale: isInView ? 1 : 0.8
+			}}
+			transition={{
+				duration: 0.8,
+				ease: [0.25, 0.46, 0.45, 0.94],
+				type: 'spring',
+				stiffness: 200,
+				damping: 20
+			}}
+			let:motion
+		>
+			<h1 class="section-header" data-text="Expertise." use:setWidth use:motion>Expertise.</h1>
+		</Motion>
+
+		<!--	description	-->
+		<Motion
+			initial={{
+				opacity: 0,
+				y: isInView ? (scrollDirection?.vertical === 'down' ? 200 : -200) : 0
+			}}
+			animate={{
+				opacity: isInView ? 1 : 0,
+				y: isInView ? 0 : 200
+			}}
+			transition={{
+				duration: 0.8,
+				ease: [0.25, 0.46, 0.45, 0.94],
+				type: 'spring',
+				stiffness: 200,
+				damping: 20,
+				delay: 0.3
+			}}
+			let:motion
+		>
+			<p use:motion class="section-description">
+				Areas I've been working on over the last few years.
+			</p>
+		</Motion>
+
+		<!--	skills	-->
 		<div class="col-span-9 col-start-2 flex flex-col gap-10 lg:mt-10">
 			{#each skills as { header, content, icon }, key (key)}
 				<ListItem {header} {content} {icon} />
@@ -19,7 +108,6 @@
 		width="64"
 		height="340"
 		viewBox="0 0 64 340"
-		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 		class="absolute top-0 left-[-7%] sm:left-0"
 	>

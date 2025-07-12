@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/state';
 	import '../app.css';
 	import Seo from '$lib/components/Seo.svelte';
@@ -10,15 +10,55 @@
 	import { splash } from '$lib/stores/splash';
 	import Splash from '$lib/components/Splash.svelte';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
+	import type Lenis from '@studio-freight/lenis';
 
 	let { children } = $props();
-	let isNavigating: boolean = $state(false);
-	let currentPath: string = $state('');
-	let isInitialLoad: boolean = $state(true);
-
+	let isNavigating = $state<boolean>(false);
+	let currentPath = $state<string>('');
+	let isInitialLoad = $state<boolean>(true);
+	let lenis: Lenis | null = null;
+	let rafId: number | null = null;
 	splash.startIntro();
 
 	onMount(() => {
+		// Initialize Lenis smooth scroll
+		if (browser) {
+			const initLenis = async () => {
+				try {
+					const { default: Lenis } = await import('@studio-freight/lenis');
+
+					lenis = new Lenis({
+						duration: 1.2,
+						easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+						orientation: 'vertical',
+						gestureOrientation: 'vertical',
+						smoothWheel: true,
+						touchMultiplier: 2
+					});
+
+					function raf(time: number) {
+						lenis?.raf(time);
+						rafId = requestAnimationFrame(raf);
+					}
+
+					rafId = requestAnimationFrame(raf);
+
+					// Stop lenis during navigation transitions
+					lenis.on('scroll', () => {
+						if (isNavigating) {
+							lenis?.stop();
+						}
+					});
+				} catch (error) {
+					console.error('Failed to initialize smooth scroll:', error);
+				}
+			};
+
+			initLenis();
+		}
+
+		// capture all navigation click
 		currentPath = page.url.pathname;
 
 		const handleClick = (e: MouseEvent) => {
@@ -34,7 +74,8 @@
 				href === currentPath ||
 				href.startsWith('mailto:') ||
 				href.startsWith('tel:')
-			) return;
+			)
+				return;
 
 			e.preventDefault();
 			e.stopPropagation();
@@ -48,11 +89,23 @@
 		};
 	});
 
+	onDestroy(() => {
+		// clean up Lenis and animation frame
+		if (lenis) {
+			lenis.destroy();
+			lenis = null;
+		}
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+	});
+
+	// navigation function
 	async function navigateWithAnimation(href: string) {
 		if (isNavigating) return;
 
 		isNavigating = true;
-
 
 		try {
 			splash.startOutro();
@@ -68,6 +121,7 @@
 		}
 	}
 
+	// track splash completion
 	function waitForSplashComplete(): Promise<void> {
 		return new Promise((resolve) => {
 			if (!$splash.isActive) {
@@ -110,9 +164,8 @@
 <svelte:head>
 	<script>
 		document.documentElement.classList.toggle(
-			"dark",
-			(("theme" in localStorage)) &&
-			localStorage.theme === "dark"
+			'dark',
+			'theme' in localStorage && localStorage.theme === 'dark'
 		);
 	</script>
 </svelte:head>

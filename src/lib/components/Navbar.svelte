@@ -45,17 +45,17 @@
 			<!-- brand -->
 			<Motion
 				initial={{
-							opacity: 0,
-							y: 20,
-						}}
+					opacity: 0,
+					y: 20
+				}}
 				animate={{
-							opacity: 1,
-							y: 0,
-						}}
+					opacity: 1,
+					y: 0
+				}}
 				transition={{
-							duration: 0.5,
-							delay: .8
-						}}
+					duration: 0.5,
+					delay: 0.8
+				}}
 				let:motion
 			>
 				<a
@@ -110,17 +110,17 @@
 			<!-- toggle -->
 			<Motion
 				initial={{
-							opacity: 0,
-							y: 20,
-						}}
+					opacity: 0,
+					y: 20
+				}}
 				animate={{
-							opacity: 1,
-							y: 0,
-						}}
+					opacity: 1,
+					y: 0
+				}}
 				transition={{
-							duration: 0.5,
-							delay: 1
-						}}
+					duration: 0.5,
+					delay: 1
+				}}
 				let:motion
 			>
 				<button use:motion aria-label="Toggle Theme" onclick={toggleTheme}>
@@ -151,10 +151,10 @@
 		<!-- nav menu -->
 		<Motion
 			initial={{
-				scaleY: isMobile ? 0 : 1,
+				scaleY: isMobile ? 0 : 1
 			}}
 			animate={{
-				scaleY: isMobile && $mobileMenu ? 1 : 1,
+				scaleY: isMobile && $mobileMenu ? 1 : 1
 			}}
 			transition={{
 				type: 'spring',
@@ -166,34 +166,34 @@
 		>
 			<ul
 				use:motion
-				class="bg-complementary-light font-raleway absolute top-0 right-0 bottom-0 left-0 mx-2 flex h-screen origin-top flex-col gap-5 px-4 text-2xl font-medium transition-transform duration-400 ease-out md:relative md:h-fit md:scale-y-100 md:flex-row md:gap-10 md:bg-transparent lg:gap-20"
+				class="bg-complementary-light font-raleway absolute top-0 right-0 bottom-0 left-0 mx-2 flex h-screen origin-top flex-col px-4 text-2xl font-medium transition-transform duration-400 ease-out md:relative md:h-fit md:scale-y-100 md:flex-row md:gap-10 md:bg-transparent lg:gap-20"
 				class:scale-y-0={isMobile && !$mobileMenu}
 				class:scale-y-100={isMobile && $mobileMenu}
 			>
-			<!-- render each nav items	-->
-			{#each navItems as navItem, i (navItem.href + '-' + $mobileMenu)}
+				<!-- render each nav items	-->
+				{#each navItems as navItem, i (navItem.href + '-' + $mobileMenu)}
 					<Motion
 						initial={{
 							opacity: !isMobile ? 0 : 1,
 							y: !isMobile ? 20 : 0,
-							x: isMobile ? "110%" : 0,
+							x: isMobile ? '110%' : 0
 						}}
 						animate={{
 							opacity: !isMobile ? 1 : 1,
 							y: isMobile ? 0 : 0,
-							x: isMobile && $mobileMenu? 0 : "110%",
+							x: isMobile && $mobileMenu ? 0 : '110%'
 						}}
 						transition={{
 							duration: 1,
-							ease: "backInOut",
+							ease: 'backInOut',
 							opacity: {
-								delay: .8 + i * 0.2,
+								delay: 0.8 + i * 0.2
 							},
 							y: {
-								delay: .8 + i * 0.2,
+								delay: 0.8 + i * 0.2
 							},
 							x: {
-								delay: .55 + i * 0.2,
+								delay: 0.55 + i * 0.2
 							}
 						}}
 						let:motion
@@ -209,13 +209,22 @@
 							</a>
 							{#if page.url.pathname === navItem.href}
 								<span class="nav-item-decorator">
-									<!-- your SVG here -->
+									<svg
+										width="70"
+										height="21"
+										viewBox="0 0 70 21"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M2.6084 21H0.160156L16.7295 0H19.1787L2.6084 21ZM9.6084 21H7.16016L23.7295 0H26.1787L9.6084 21ZM16.6084 21H14.1602L30.7295 0H33.1787L16.6084 21ZM23.6084 21H21.1602L37.7295 0H40.1787L23.6084 21ZM30.6084 21H28.1602L44.7295 0H47.1787L30.6084 21ZM37.6084 21H35.1602L51.7295 0H54.1787L37.6084 21ZM44.6084 21H42.1602L58.7295 0H61.1787L44.6084 21ZM51.6084 21H49.1602L65.7295 0H68.1787L51.6084 21ZM70 6.5625L58.6084 21H56.1592L70 3.45898V6.5625ZM70 15.4346L65.6084 21H63.1592L70 12.3301V15.4346ZM0 15.4346V12.3301L9.72949 0H12.1787L0 15.4346ZM0 6.5625V3.45898L2.72949 0H5.17871L0 6.5625Z"
+										/>
+									</svg>
 								</span>
 							{/if}
 						</li>
 					</Motion>
-			{/each}
-		</ul>
+				{/each}
+			</ul>
 		</Motion>
 
 		<!-- mobile mode menu button	-->
@@ -241,8 +250,8 @@
 </nav>
 
 <style>
-    .motion-item {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+	.motion-item {
+		opacity: 0;
+		transform: translateY(20px);
+	}
 </style>

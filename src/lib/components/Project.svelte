@@ -2,11 +2,93 @@
 	import { setWidth } from '$lib/utils/helper';
 	import Card from '$lib/core/Card.svelte';
 	import { projects } from '$lib/data/project';
+	import { Motion } from 'svelte-motion';
+	import { inview, type Options, type ScrollDirection } from 'svelte-inview';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+
+	// calculating screen width
+	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
+	let isMobile: boolean = $derived(windowWidth < 1024);
+
+	onMount(() => {
+		windowWidth = window.innerWidth;
+
+		const handleResize = () => {
+			windowWidth = window.innerWidth;
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	});
+
+	let isInView = $state<boolean>(false);
+	let scrollDirection = $state<ScrollDirection>();
+	const options = $derived<Options>({
+		rootMargin: !isMobile ? '-400px' : '-100px',
+		unobserveOnEnter: true
+	});
+
+	const handleChange = ({ detail }: CustomEvent<ObserverEventDetails>) => {
+		isInView = detail.inView;
+		scrollDirection = detail.scrollDirection;
+	};
 </script>
 
-<section class="relative mt-40 grid grid-cols-11 gap-8">
-	<h1 class="section-header" data-text="Projects." use:setWidth>Projects.</h1>
-	<p class="section-description">Selected work I've taken on in the past.</p>
+<section
+	class="relative mt-40 grid grid-cols-11 gap-8"
+	use:inview={options}
+	oninview_change={handleChange}
+>
+	<!-- heading content	-->
+	<Motion
+		initial={{
+			opacity: 0,
+			x: isInView ? (scrollDirection?.vertical === 'down' ? 200 : 200) : 0,
+			scale: 0.8
+		}}
+		animate={{
+			opacity: isInView ? 1 : 0,
+			x: isInView ? 0 : 120,
+			scale: isInView ? 1 : 0.8
+		}}
+		transition={{
+			duration: 0.8,
+			ease: [0.25, 0.46, 0.45, 0.94],
+			type: 'spring',
+			stiffness: 200,
+			damping: 20
+		}}
+		let:motion
+	>
+		<h1 class="section-header" data-text="Projects." use:setWidth use:motion>Projects.</h1>
+	</Motion>
+
+	<!--	description	-->
+	<Motion
+		initial={{
+			opacity: 0,
+			y: isInView ? (scrollDirection?.vertical === 'down' ? 200 : -200) : 0
+		}}
+		animate={{
+			opacity: isInView ? 1 : 0,
+			y: isInView ? 0 : 200
+		}}
+		transition={{
+			duration: 0.8,
+			ease: [0.25, 0.46, 0.45, 0.94],
+			type: 'spring',
+			stiffness: 200,
+			damping: 20,
+			delay: 0.3
+		}}
+		let:motion
+	>
+		<p use:motion class="section-description">Selected work I've taken on in the past.</p>
+	</Motion>
 	{#each projects as { name, description, id, repoUrl, type, technologies }, key (key)}
 		<Card {name} {description} {id} {repoUrl} {type} {technologies} />
 	{/each}
