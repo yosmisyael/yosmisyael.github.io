@@ -173,4 +173,15 @@
 	.card-body {
 		@apply text-lg font-sans relative flex flex-col gap-3 pr-4;
 	}
+
+	.footer-bottom-line {
+		paint-order: stroke fill;
+		@supports (-webkit-text-stroke: 1rem var(--color-background)) {
+			-webkit-text-stroke: 8px var(--color-background);
+		}
+	}
+	.footer-icon {
+		paint-order: stroke fill;
+		@apply fill-primary-dark w-auto h-6 group-hover:fill-primary stroke-[7rem] stroke-background;
+	}
 }
