@@ -181,7 +181,7 @@
 						animate={{
 							opacity: !isMobile ? 1 : 1,
 							y: isMobile ? 0 : 0,
-							x: isMobile && $mobileMenu ? 0 : '110%'
+							x: isMobile ? $mobileMenu ? 0 : '110%' : 0,
 						}}
 						transition={{
 							duration: 1,
