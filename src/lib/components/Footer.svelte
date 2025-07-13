@@ -47,7 +47,7 @@
 
 	<!-- footer bottom line	-->
 	<p
-		class="footer-bottom-line z-40 py-3 text-center text-sm font-medium lg:fixed lg:top-7/12 lg:left-8 lg:origin-bottom-left lg:rotate-90 lg:text-left lg:text-base"
+		class="footer-bottom-line z-40 py-3 text-center text-sm lg:fixed lg:top-6/12 lg:left-8 lg:origin-bottom-left lg:rotate-90 lg:text-left lg:text-base"
 		class:text-primary-dark={!$theme}
 		class:text-primary={$theme}
 	>
