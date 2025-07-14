@@ -1,28 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import { theme } from '$lib/stores/theme';
 	import { Motion } from 'svelte-motion';
-
-	// determine window width
-	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
-	let isMobile: boolean = $derived(windowWidth < 768);
+	import { getWindowContext } from '$lib/context/window.svelte';
 
 	// listen to screen resize
-	onMount(() => {
-		windowWidth = window.innerWidth;
-
-		const handleResize = () => {
-			windowWidth = window.innerWidth;
-		};
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	});
+	const windowContext = getWindowContext();
 
 	let {
 		toggleTheme,
@@ -69,9 +52,8 @@
 						width="198"
 						height="193"
 						viewBox="0 0 198 193"
-						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						class="h-14 w-fit hover:cursor-pointer md:h-16"
+						class="h-14 w-fit hover:cursor-pointer md:h-16 fill-none"
 					>
 						<path
 							class="fill-complementary-light"
@@ -128,9 +110,8 @@
 						width="48"
 						height="48"
 						viewBox="0 0 34 34"
-						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
-						class="h-10 hover:cursor-pointer md:h-max"
+						class="h-10 hover:cursor-pointer md:h-max fill-none"
 					>
 						<path
 							class="fill-complementary-light"
@@ -151,10 +132,10 @@
 		<!-- nav menu -->
 		<Motion
 			initial={{
-				scaleY: isMobile ? 0 : 1
+				scaleY: windowContext.isMobile ? 0 : 1
 			}}
 			animate={{
-				scaleY: isMobile && $mobileMenu ? 1 : 1
+				scaleY: windowContext.isMobile && $mobileMenu ? 1 : 1
 			}}
 			transition={{
 				type: 'spring',
@@ -167,21 +148,21 @@
 			<ul
 				use:motion
 				class="bg-complementary-light font-raleway absolute top-0 right-0 bottom-0 left-0 mx-2 flex h-screen origin-top flex-col px-4 text-2xl font-medium transition-transform duration-400 ease-out md:relative md:h-fit md:scale-y-100 md:flex-row md:gap-10 md:bg-transparent gap-20"
-				class:scale-y-0={isMobile && !$mobileMenu}
-				class:scale-y-100={isMobile && $mobileMenu}
+				class:scale-y-0={windowContext.isMobile && !$mobileMenu}
+				class:scale-y-100={windowContext.isMobile && $mobileMenu}
 			>
 				<!-- render each nav items	-->
 				{#each navItems as navItem, i (navItem.href + '-' + $mobileMenu)}
 					<Motion
 						initial={{
-							opacity: !isMobile ? 0 : 1,
-							y: !isMobile ? 20 : 0,
-							x: isMobile ? '110%' : 0
+							opacity: !windowContext.isMobile ? 0 : 1,
+							y: !windowContext.isMobile ? 20 : 0,
+							x: windowContext.isMobile ? '110%' : 0
 						}}
 						animate={{
-							opacity: !isMobile ? 1 : 1,
-							y: isMobile ? 0 : 0,
-							x: isMobile ? $mobileMenu ? 0 : '110%' : 0,
+							opacity: !windowContext.isMobile ? 1 : 1,
+							y: windowContext.isMobile ? 0 : 0,
+							x: windowContext.isMobile ? $mobileMenu ? 0 : '110%' : 0,
 						}}
 						transition={{
 							duration: 1,

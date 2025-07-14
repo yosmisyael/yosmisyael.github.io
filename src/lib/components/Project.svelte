@@ -4,31 +4,15 @@
 	import { projects } from '$lib/data/project';
 	import { Motion } from 'svelte-motion';
 	import { inview, type Options, type ScrollDirection } from 'svelte-inview';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
+	import { getWindowContext } from '$lib/context/window.svelte';
 
-	// calculating screen width
-	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
-	let isMobile: boolean = $derived(windowWidth < 1024);
-
-	onMount(() => {
-		windowWidth = window.innerWidth;
-
-		const handleResize = () => {
-			windowWidth = window.innerWidth;
-		};
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	});
+	// listen to screen resize
+	const windowContext = getWindowContext();
 
 	let isInView = $state<boolean>(false);
 	let scrollDirection = $state<ScrollDirection>();
 	const options = $derived<Options>({
-		rootMargin: !isMobile ? '-400px' : '-100px',
+		rootMargin: !windowContext.isMobile ? '-400px' : '-100px',
 		unobserveOnEnter: true
 	});
 

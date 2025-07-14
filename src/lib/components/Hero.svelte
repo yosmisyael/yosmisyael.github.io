@@ -1,26 +1,11 @@
 <script lang="ts">
 	import Button from '$lib/core/Button.svelte';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { Motion } from 'svelte-motion';
-
-	// determine window width
-	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
-	let isMobile: boolean = $derived(windowWidth < 1024);
-
-	onMount(() => {
-		windowWidth = window.innerWidth;
-
-		const handleResize = () => {
-			windowWidth = window.innerWidth;
-		};
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	});
+	import { getWindowContext } from '$lib/context/window.svelte';
+	
+	// listen to screen resize
+	const windowContext = getWindowContext();
 
 	let logoContainer: HTMLDivElement;
 	let logo = $state<HTMLDivElement>();
@@ -82,8 +67,6 @@
 		};
 	});
 </script>
-
-<svelte:window bind:innerWidth={windowWidth} />
 
 <section
 	class="flex min-h-screen flex-col items-center overflow-hidden select-none lg:grid lg:grid-cols-11"
@@ -185,7 +168,7 @@
 			}}
 			let:motion>
 			<div use:motion>
-				<Button href="#expertise" content="Let's dive in" position={isMobile ? 'center' : 'left'} />
+				<Button href="#expertise" content="Let's dive in" position={windowContext.isMobile ? 'center' : 'left'} />
 			</div>
 		</Motion>
 

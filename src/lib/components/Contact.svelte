@@ -3,9 +3,11 @@
 	import Button from '$lib/core/Button.svelte';
 	import { Motion } from 'svelte-motion';
 	import type { Options } from 'svelte-inview';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 	import { inview } from 'svelte-inview';
+	import { getWindowContext } from '$lib/context/window.svelte';
+	
+	// listen to screen resize
+	const windowContext = getWindowContext();
 
 	const contents: string[] = [
 		"I believe our work should do good. I don't partner with projects involved in online gambling,\n" +
@@ -14,30 +16,12 @@
 		"If you're building something that promotes sustainability, diversity, or creates positive\n" +
 			"\t\timpact, let's connect."
 	];
-
-	// calculating screen width
-	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
-	let isMobile: boolean = $derived(windowWidth < 1024);
-
-	onMount(() => {
-		windowWidth = window.innerWidth;
-
-		const handleResize = () => {
-			windowWidth = window.innerWidth;
-		};
-
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	});
-
+	
 	// observer
 	let isInView = $state<boolean>(false);
 	let scrollDirection = $state<ScrollDirection>();
 	const options = $derived<Options>({
-		rootMargin: !isMobile ? '-400px' : '-180px',
+		rootMargin: !windowContext.isMobile ? '-400px' : '-180px',
 		unobserveOnEnter: true
 	});
 
