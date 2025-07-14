@@ -21,7 +21,20 @@
 	let rafId: number | null = null;
 	splash.startIntro();
 
+	// determine window width
+	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
+	let isMobile: boolean = $derived(windowWidth < 768);
+
 	onMount(() => {
+		// listen to screen resize
+		windowWidth = window.innerWidth;
+
+		const handleResize = () => {
+			windowWidth = window.innerWidth;
+		};
+
+		window.addEventListener('resize', handleResize);
+
 		// Initialize Lenis smooth scroll
 		if (browser) {
 			const initLenis = async () => {
@@ -86,6 +99,7 @@
 
 		return () => {
 			document.removeEventListener('click', handleClick, true);
+			window.removeEventListener('resize', handleResize);
 		};
 	});
 
@@ -149,7 +163,7 @@
 			splash.startIntro();
 		}
 
-		if ($splash.isActive) document.body.style.overflow = 'hidden';
+		if ($splash.isActive || ($mobileMenu && isMobile) || isInitialLoad) document.body.style.overflow = 'hidden';
 		else document.body.style.overflow = '';
 	});
 </script>

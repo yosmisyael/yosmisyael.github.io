@@ -158,15 +158,15 @@
 			}}
 			transition={{
 				type: 'spring',
-				stiffness: 800,
-				damping: 6,
+				stiffness: 400,
+				damping: 15,
 				delay: 1.3
 			}}
 			let:motion
 		>
 			<ul
 				use:motion
-				class="bg-complementary-light font-raleway absolute top-0 right-0 bottom-0 left-0 mx-2 flex h-screen origin-top flex-col px-4 text-2xl font-medium transition-transform duration-400 ease-out md:relative md:h-fit md:scale-y-100 md:flex-row md:gap-10 md:bg-transparent lg:gap-20"
+				class="bg-complementary-light font-raleway absolute top-0 right-0 bottom-0 left-0 mx-2 flex h-screen origin-top flex-col px-4 text-2xl font-medium transition-transform duration-400 ease-out md:relative md:h-fit md:scale-y-100 md:flex-row md:gap-10 md:bg-transparent gap-20"
 				class:scale-y-0={isMobile && !$mobileMenu}
 				class:scale-y-100={isMobile && $mobileMenu}
 			>
@@ -200,9 +200,10 @@
 					>
 						<li
 							use:motion
-							class="motion-item nav-item mt-40 md:mt-0"
+							class="motion-item nav-item md:mt-0"
 							class:text-primary-dark={!$theme}
 							class:text-primary={$theme}
+							class:mt-40={i === 0}
 						>
 							<a href={navItem.href} class="relative z-10" draggable="false">
 								{navItem.label}

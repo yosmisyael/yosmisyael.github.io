@@ -53,13 +53,13 @@
 
 	.page-wrapper::before {
 		content: '';
-		@apply fixed right-0 left-0 top-0 h-1 md:h-4 bg-white;
+		@apply fixed right-0 left-0 top-0 h-2 md:h-4 bg-white;
 		z-index: 1000;
 	}
 
 	.page-wrapper::after {
 		content: '';
-		@apply fixed right-0 left-0 bottom-0 h-1 md:h-4 bg-white;
+		@apply fixed right-0 left-0 bottom-0 h-2 md:h-4 bg-white;
 		z-index: 1000;
 	}
 

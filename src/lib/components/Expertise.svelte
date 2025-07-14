@@ -42,7 +42,7 @@
 
 <section class="relative">
 	<div
-		class="text-primary-dark relative z-10 grid grid-cols-11 gap-8 px-4"
+		class="text-primary-dark relative z-10 grid grid-cols-11 gap-8 px-4 lg:pt-12"
 		id="expertise"
 		use:inview={options}
 		oninview_change={handleChange}
