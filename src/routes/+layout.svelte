@@ -11,7 +11,7 @@
 	import Splash from '$lib/components/Splash.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
-	import type Lenis from '@studio-freight/lenis';
+	import type Lenis from 'lenis';
 	import { setWindowContext } from '$lib/context/window.svelte';
 
 	let { children } = $props();
@@ -30,15 +30,17 @@
 		if (browser) {
 			const initLenis = async () => {
 				try {
-					const { default: Lenis } = await import('@studio-freight/lenis');
+					const { default: Lenis } = await import('lenis');
 
 					lenis = new Lenis({
-						duration: 1.2,
+						lerp: 0.08,
 						easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+						touchMultiplier: 1.5,
+						wheelMultiplier: 1.1,
+
 						orientation: 'vertical',
 						gestureOrientation: 'vertical',
 						smoothWheel: true,
-						touchMultiplier: 2
 					});
 
 					function raf(time: number) {
