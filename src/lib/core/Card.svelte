@@ -162,7 +162,7 @@
 				<p class="text-md">{description}</p>
 				<p class="flex flex-wrap gap-3">
 					{#each technologies as tech, key (key)}
-						<span class="font-mono text-sm font-semibold">{tech}</span>
+						<span class="font-mono text-sm font-semibold underline underline-offset-2">{tech}</span>
 					{/each}
 				</p>
 			</div>
