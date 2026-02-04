@@ -45,7 +45,6 @@
 					use:motion
 					href="/"
 					aria-label="Home"
-					onclick={() => $mobileMenu && mobileMenu.close()}
 					class="motion-item"
 				>
 					<svg
@@ -190,7 +189,7 @@
 								{navItem.label}
 							</a>
 							{#if page.url.pathname === navItem.href}
-								<span class="nav-item-decorator">
+								<span class="nav-item-decorator {windowContext.isMobile ? 'fill-primary' : 'fill-primary-light'}">
 									<svg
 										width="70"
 										height="21"
