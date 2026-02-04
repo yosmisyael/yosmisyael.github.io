@@ -34,7 +34,7 @@
 	}
 
 	.button > span {
-		@apply font-raleway text-primary border-primary relative z-20 flex w-fit rounded-md border-[2px] sm:border-[.2rem] px-8 py-3 text-lg sm:text-xl font-semibold transition-all duration-300 ease-in-out;
+		@apply font-raleway text-primary border-primary relative z-20 flex w-fit rounded-md border-2 sm:border-[.2rem] px-8 py-3 text-lg sm:text-xl font-semibold transition-all duration-300 ease-in-out;
 	}
 
 	.button::before {
@@ -120,7 +120,7 @@
 	}
 
     .section-description {
-        @apply col-span-9 col-start-2 text-lg font-sans font-medium text-primary-dark;
+        @apply col-span-9 col-start-2 text-xl font-sans font-medium text-primary-dark;
     }
 
 	.card-wrapper {
