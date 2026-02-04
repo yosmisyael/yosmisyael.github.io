@@ -9,49 +9,28 @@
 	import { theme } from '$lib/stores/theme';
 	import { splash } from '$lib/stores/splash';
 	import Splash from '$lib/components/Splash.svelte';
-	import { goto } from '$app/navigation';
+	import { onNavigate } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import type Lenis from 'lenis';
 	import { setWindowContext } from '$lib/context/window.svelte';
 
 	let { children } = $props();
-	let currentPath = $state<string>('');
 	let isInitialLoad = $state<boolean>(true);
 	let lenis: Lenis | null = null;
 	let rafId: number | null = null;
-	let isManualNavigation = $state(false);
 
 	const windowContext = setWindowContext();
 
 	// watch for route changes
 	$effect(() => {
-		const newPath = page.url.pathname;
-
 		if (isInitialLoad) {
 			// reveal page on initial load
 			isInitialLoad = false;
-			currentPath = newPath;
 
 			(async () => {
 				await splash.startOutro();
 				setTimeout(() => splash.hide(), 500);
 			})();
-
-		} else if (newPath !== currentPath && !isManualNavigation) {
-			// browser back/forward button
-			currentPath = newPath;
-
-			(async () => {
-				await splash.startIntro();
-				// add a bit delay to wait for new page to paint
-				await new Promise(resolve => setTimeout(resolve, 100));
-				await splash.startOutro();
-				setTimeout(() => splash.hide(), 500);
-			})();
-
-		} else if (newPath !== currentPath && isManualNavigation) {
-			// manual navigation
-			currentPath = newPath;
 		}
 	});
 
@@ -87,32 +66,7 @@
 			initLenis();
 		}
 
-		function handleNavigationClick(e: MouseEvent) {
-			const target = e.target as HTMLElement;
-			const link = target.closest('a');
-			if (!link) return;
-			const href = link.getAttribute('href');
-
-			if (
-				!href ||
-				href.startsWith('http') ||
-				href.startsWith('#') ||
-				href === currentPath ||
-				href.startsWith('mailto:') ||
-				href.startsWith('tel:')
-			)
-				return;
-
-			e.preventDefault();
-			e.stopPropagation();
-			navigateWithAnimation(href);
-		}
-
-		document.addEventListener('click', handleNavigationClick, true);
-
-		return () => {
-			document.removeEventListener('click', handleNavigationClick, true);
-		};
+		return () => {};
 	});
 
 	onDestroy(() => {
@@ -127,37 +81,23 @@
 		windowContext.destroy();
 	});
 
-	async function navigateWithAnimation(href: string) {
-		isManualNavigation = true;
+	onNavigate((navigation) => {
+		// check whether it need to play splash or not
+		if (!navigation.to || navigation.to.route.id === navigation.from?.route.id) return;
 
-		try {
-			// close menu if in mobile view
-			if ($mobileMenu) mobileMenu.close();
+		return new Promise((resolve) => {
+			const runSplash = async () => {
+				await splash.startIntro();
+				await new Promise(r => setTimeout(r, 50));
+				resolve();
+				await navigation.complete;
+				await splash.startOutro();
+				setTimeout(() => splash.hide(), 500);
+			}
 
-			// cover current page
-			await splash.startIntro();
-
-			// eslint-disable-next-line svelte/no-navigation-without-resolve
-			await goto(href); // perform navigation
-
-			// add a bit delay to wait for new page to paint
-			await new Promise(resolve => setTimeout(resolve, 100));
-
-			// reveal destination page
-			await splash.startOutro();
-
-			// hide bars after outro
-			setTimeout(() => {
-				splash.hide();
-				isManualNavigation = false;
-			}, 500);
-
-		} catch (error) {
-			console.error('Navigation error:', error);
-			splash.hide();
-			isManualNavigation = false;
-		}
-	}
+			runSplash();
+		});
+	});
 
 	function getScrollbarWidth(): number {
 		return window.innerWidth - document.documentElement.clientWidth;
