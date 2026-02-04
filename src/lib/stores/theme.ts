@@ -5,7 +5,6 @@ import { splash } from '$lib/stores/splash';
 function createThemeStore() {
 	let initialValue: boolean = false;
 
-	// load saved preference on initialization
 	if (browser) {
 		const savedTheme: string | null = localStorage.getItem('theme');
 		initialValue = savedTheme === 'dark';
@@ -15,42 +14,43 @@ function createThemeStore() {
 	const { subscribe, update } = writable(initialValue);
 
 	async function toggle() {
-		splash.startOutro();
+		try {
+			// cover the page
+			await splash.startIntro();
 
-		await waitForSplashComplete();
+			// add a bit of delay to look more natural
+			await new Promise((resolve) => setTimeout(resolve, 400));
 
-		update(isDark => {
-			const newValue: boolean = !isDark;
-			if (browser) {
-				localStorage.setItem('theme', newValue ? 'dark' : 'light');
-				updateThemeClass(newValue);
-			}
-			return newValue;
-		});
+			// change theme
+			update((isDark) => {
+				const newValue = !isDark;
+				if (browser) {
+					localStorage.setItem('theme', newValue ? 'dark' : 'light');
+					updateThemeClass(newValue);
+				}
+				return newValue;
+			});
 
-		splash.startIntro();
+			// add a bit of delay to look more natural
+			await new Promise((resolve) => setTimeout(resolve, 200));
+
+			// reveal page with new theme
+			await splash.startOutro();
+
+			// hide bars
+			setTimeout(() => {
+				splash.hide();
+			}, 500);
+		} catch (error) {
+			console.error('Theme toggle error:', error);
+			splash.hide();
+		}
 	}
 
 	function updateThemeClass(isDark: boolean) {
 		if (browser) {
 			document.documentElement.classList.toggle('dark', isDark);
 		}
-	}
-
-	function waitForSplashComplete(): Promise<void> {
-		return new Promise((resolve) => {
-			if (!splash.isActive) {
-				resolve();
-				return;
-			}
-
-			const checkInterval = setInterval(() => {
-				if (!splash.isActive) {
-					clearInterval(checkInterval);
-					resolve();
-				}
-			}, 0.1);
-		});
 	}
 
 	return {
