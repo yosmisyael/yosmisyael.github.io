@@ -3,98 +3,80 @@
 	import { browser } from '$app/environment';
 	import { splash } from '$lib/stores/splash';
 
-	// computing bars total
-	let windowWidth: number = $state(browser ? window.innerWidth : 1024);
-	let isMobile: boolean = $derived(windowWidth < 1024);
-	let barCount: number = $derived(isMobile ? 4 : 8);
+	let windowWidth = $state(browser ? window.innerWidth : 1024);
+	let barCount = $derived(windowWidth < 1024 ? 4 : 8);
+	let barRefs: (HTMLDivElement | null)[] = $state([]);
+	let runningAnimations: Animation[] = [];
 
-	// track window width
 	onMount(() => {
-		windowWidth = window.innerWidth;
-		const handleResize = () => {
-			windowWidth = window.innerWidth;
-		};
+		const handleResize = () => windowWidth = window.innerWidth;
 		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		return () => {
+			runningAnimations.forEach(animation => animation.cancel());
+		};
 	});
 
-	// setup state for bar animation
-	let barsAnimating: boolean[] = $state([]);
-	let barsRevealed: boolean[] = $state([]);
-	let animationStarted: boolean = $state(false);
-
-	// perform animation
+	// run animation when mode changes
 	$effect(() => {
-		barsAnimating = Array(barCount).fill(false);
-		if ($splash.isActive && !animationStarted) {
-			animationStarted = true;
-			if ($splash.mode === 'intro') {
-				barsRevealed = Array(barCount).fill(false);
-			} else {
-				barsRevealed = Array(barCount).fill(true);
-			}
-			startAnimation();
-		} else if (!$splash.isActive) {
-			animationStarted = false;
+		const mode = $splash.currentAnimation;
+
+		const barElements = barRefs.filter((el): el is HTMLDivElement => el !== null);
+
+		if (!mode || barElements.length !== barCount) {
+			return;
 		}
+
+		// cancel any running animations
+		runningAnimations.forEach(animation => animation.cancel());
+		runningAnimations = [];
+
+		const isIntro = mode === 'intro';
+		const duration = 1000;
+		const stagger = 80;
+		const easing = 'cubic-bezier(0.85, 0, 0.15, 1)';
+
+		// apply animations for each bar
+		const animations = barElements.map((bar, i) => {
+			const delay = (isIntro ? i : barCount - 1 - i) * stagger;
+
+			const keyframes: Keyframe[] = isIntro
+				? [
+					{ transform: 'scaleY(0)', transformOrigin: 'top' },
+					{ transform: 'scaleY(1)', transformOrigin: 'top' }
+				]
+				: [
+					{ transform: 'scaleY(1)', transformOrigin: 'top' },
+					{ transform: 'scaleY(0)', transformOrigin: 'top' }
+				];
+
+			const animation = bar.animate(keyframes, {
+				duration,
+				delay,
+				easing,
+				fill: 'forwards'
+			});
+
+			runningAnimations.push(animation);
+			return animation;
+		});
+
+		const lastBarIndex = isIntro ? 0 : barCount - 1;
+		const lastAnimation = animations[lastBarIndex];
+
+		lastAnimation.onfinish = () => {
+			splash.complete();
+		};
 	});
-
-	// animate function
-	function startAnimation() {
-		if ($splash.mode === 'intro') {
-			for (let i = barCount - 1; i >= 0; i--) {
-				const delay = (barCount - 1 - i) * 100;
-				setTimeout(() => {
-					barsAnimating[i] = true;
-					barsAnimating = [...barsAnimating];
-
-					setTimeout(() => {
-						barsRevealed[i] = true;
-						barsRevealed = [...barsRevealed];
-						if (i === 0) {
-							setTimeout(() => {
-								splash.stop();
-							}, 300);
-						}
-					}, 400);
-				}, delay);
-			}
-		} else {
-			for (let i = 0; i < barCount; i++) {
-				const delay = i * 100;
-				setTimeout(() => {
-					barsRevealed[i] = false;
-					barsRevealed = [...barsRevealed];
-
-					setTimeout(() => {
-						barsAnimating[i] = true;
-						barsAnimating = [...barsAnimating];
-						if (i === barCount - 1) {
-							setTimeout(() => {
-								splash.stop();
-							}, 300);
-						}
-					}, 400);
-				}, delay);
-			}
-		}
-	}
 </script>
 
-{#if $splash.isActive}
-	<div class="loading-container">
-		{#each Array(barCount) as _, i (i)}
-			{#if $splash.mode === 'intro'}
-				{#if !barsRevealed[i]}
-					<div class="loading-bar" class:animate={barsAnimating[i]}></div>
-				{:else}
-					<div class="revealed-section"></div>
-				{/if}
-			{:else if barsRevealed[i]}
-				<div class="revealed-section"></div>
-			{:else}
-				<div class="loading-bar reverse" class:animate={barsAnimating[i]}></div>
-			{/if}
+{#if $splash.isVisible}
+	<div class="splash-container">
+		{#each [...Array(barCount).keys()] as i (i)}
+			<div
+				bind:this={barRefs[i]}
+				class="splash-bar"
+				style="transform: scaleY({$splash.currentAnimation === 'outro' ? 1 : 0})"
+			></div>
 		{/each}
 	</div>
 {/if}
