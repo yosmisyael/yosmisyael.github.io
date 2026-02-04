@@ -1,36 +1,49 @@
 import { writable } from 'svelte/store';
 
 type SplashStore = {
-	isActive: boolean;
-	mode: 'intro' | 'outro';
-}
+	isVisible: boolean;
+	currentAnimation: 'intro' | 'outro' | null;
+};
 
 function createSplashStore() {
 	const { subscribe, set, update } = writable<SplashStore>({
-		isActive: false,
-		mode: 'intro',
+		isVisible: false,
+		currentAnimation: null
 	});
 
-	let currentState: SplashStore = { isActive: false, mode: 'intro' as const };
+	let animationResolve: (() => void) | null = null;
 
 	return {
 		subscribe,
-		set,
-		update,
-		get isActive() { return currentState.isActive; },
-		get mode() { return currentState.mode; },
+
 		startIntro: () => {
-			currentState = { isActive: true, mode: 'intro' };
-			set(currentState);
+			return new Promise<void>((resolve) => {
+				animationResolve = resolve;
+				set({ isVisible: true, currentAnimation: 'intro' });
+			});
 		},
-		startOutro: () => {
-			currentState = { isActive: true, mode: 'outro' };
-			set(currentState);
+
+		startOutro: (): Promise<void> => {
+			return new Promise<void>((resolve): void => {
+				animationResolve = resolve;
+				set({ isVisible: true, currentAnimation: 'outro' });
+			});
 		},
-		stop: () => {
-			currentState = { isActive: false, mode: 'intro' };
-			set(currentState);
+
+		complete: (): void => {
+			if (animationResolve) {
+				animationResolve();
+				animationResolve = null;
+			}
+
+			// only clear animation mode field
+			update((splashStore: SplashStore) => ({ ...splashStore, currentAnimation: null }));
 		},
+
+		// hide splash component
+		hide: () => {
+			set({ isVisible: false, currentAnimation: null });
+		}
 	};
 }
 
