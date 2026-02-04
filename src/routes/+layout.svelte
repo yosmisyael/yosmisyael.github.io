@@ -1,7 +1,7 @@
 <script lang="ts">
+	import '../app.css';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/state';
-	import '../app.css';
 	import Seo from '$lib/components/Seo.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -15,18 +15,48 @@
 	import { setWindowContext } from '$lib/context/window.svelte';
 
 	let { children } = $props();
-	let isNavigating = $state<boolean>(false);
 	let currentPath = $state<string>('');
 	let isInitialLoad = $state<boolean>(true);
 	let lenis: Lenis | null = null;
 	let rafId: number | null = null;
-	splash.startIntro();
+	let isManualNavigation = $state(false);
 
-	// listen to screen resize
 	const windowContext = setWindowContext();
 
+	// watch for route changes
+	$effect(() => {
+		const newPath = page.url.pathname;
+
+		if (isInitialLoad) {
+			// reveal page on initial load
+			isInitialLoad = false;
+			currentPath = newPath;
+
+			(async () => {
+				await splash.startOutro();
+				setTimeout(() => splash.hide(), 500);
+			})();
+
+		} else if (newPath !== currentPath && !isManualNavigation) {
+			// browser back/forward button
+			currentPath = newPath;
+
+			(async () => {
+				await splash.startIntro();
+				// add a bit delay to wait for new page to paint
+				await new Promise(resolve => setTimeout(resolve, 100));
+				await splash.startOutro();
+				setTimeout(() => splash.hide(), 500);
+			})();
+
+		} else if (newPath !== currentPath && isManualNavigation) {
+			// manual navigation
+			currentPath = newPath;
+		}
+	});
+
 	onMount(() => {
-		// Initialize Lenis smooth scroll
+		// initialize Lenis
 		if (browser) {
 			const initLenis = async () => {
 				try {
@@ -37,10 +67,9 @@
 						easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 						touchMultiplier: 1.5,
 						wheelMultiplier: 1.1,
-
 						orientation: 'vertical',
 						gestureOrientation: 'vertical',
-						smoothWheel: true,
+						smoothWheel: true
 					});
 
 					function raf(time: number) {
@@ -50,27 +79,18 @@
 
 					rafId = requestAnimationFrame(raf);
 
-					// Stop lenis during navigation transitions
-					lenis.on('scroll', () => {
-						if (isNavigating) {
-							lenis?.stop();
-						}
-					});
 				} catch (error) {
-					console.error('Failed to initialize smooth scroll:', error);
+					console.error('Failed to apply smooth scroll:', error);
 				}
 			};
 
 			initLenis();
 		}
 
-		// capture all navigation click
-		currentPath = page.url.pathname;
-
-		const handleClick = (e: MouseEvent) => {
+		function handleNavigationClick(e: MouseEvent) {
 			const target = e.target as HTMLElement;
 			const link = target.closest('a');
-			if (!link || isNavigating) return;
+			if (!link) return;
 			const href = link.getAttribute('href');
 
 			if (
@@ -86,17 +106,16 @@
 			e.preventDefault();
 			e.stopPropagation();
 			navigateWithAnimation(href);
-		};
+		}
 
-		document.addEventListener('click', handleClick, true);
+		document.addEventListener('click', handleNavigationClick, true);
 
 		return () => {
-			document.removeEventListener('click', handleClick, true);
+			document.removeEventListener('click', handleNavigationClick, true);
 		};
 	});
 
 	onDestroy(() => {
-		// clean up Lenis and animation frame
 		if (lenis) {
 			lenis.destroy();
 			lenis = null;
@@ -105,61 +124,64 @@
 			cancelAnimationFrame(rafId);
 			rafId = null;
 		}
-
-		// destroy window listener
 		windowContext.destroy();
 	});
 
-	// navigation function
 	async function navigateWithAnimation(href: string) {
-		if (isNavigating) return;
-
-		isNavigating = true;
+		isManualNavigation = true;
 
 		try {
-			splash.startOutro();
-			await waitForSplashComplete();
-			if ($mobileMenu) mobileMenu.toggle();
-			await goto(href, { replaceState: false });
-			currentPath = href;
-			splash.startIntro();
+			// close menu if in mobile view
+			if ($mobileMenu) mobileMenu.close();
+
+			// cover current page
+			await splash.startIntro();
+
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
+			await goto(href); // perform navigation
+
+			// add a bit delay to wait for new page to paint
+			await new Promise(resolve => setTimeout(resolve, 100));
+
+			// reveal destination page
+			await splash.startOutro();
+
+			// hide bars after outro
+			setTimeout(() => {
+				splash.hide();
+				isManualNavigation = false;
+			}, 500);
+
 		} catch (error) {
 			console.error('Navigation error:', error);
-		} finally {
-			isNavigating = false;
+			splash.hide();
+			isManualNavigation = false;
 		}
 	}
 
-	// track splash completion
-	function waitForSplashComplete(): Promise<void> {
-		return new Promise((resolve) => {
-			if (!$splash.isActive) {
-				resolve();
-				return;
-			}
-
-			const checkInterval = setInterval(() => {
-				if (!$splash.isActive) {
-					clearInterval(checkInterval);
-					resolve();
-				}
-			}, 0.1);
-		});
+	function getScrollbarWidth(): number {
+		return window.innerWidth - document.documentElement.clientWidth;
 	}
 
+	// watch for scroll locking
 	$effect(() => {
-		if (isInitialLoad) {
-			isInitialLoad = false;
-			return;
-		}
+		if (!browser) return;
 
-		if (page.url.pathname !== currentPath && !isNavigating) {
-			currentPath = page.url.pathname;
-			splash.startIntro();
-		}
+		const shouldLockScroll = $splash.isVisible || ($mobileMenu && windowContext.isMobile);
 
-		if ($splash.isActive || ($mobileMenu && windowContext.isMobile) || isInitialLoad) document.body.style.overflow = 'hidden';
-		else document.body.style.overflow = '';
+		if (shouldLockScroll) {
+			const scrollbarWidth = getScrollbarWidth();
+
+			lenis?.stop();
+			document.body.style.overflow = 'hidden';
+			if (scrollbarWidth > 0) {
+				document.body.style.paddingRight = `${scrollbarWidth}px`;
+			}
+		} else {
+			lenis?.start();
+			document.body.style.overflow = '';
+			document.body.style.paddingRight = '';
+		}
 	});
 </script>
 
@@ -172,10 +194,10 @@
 
 <svelte:head>
 	<script>
-		document.documentElement.classList.toggle(
-			'dark',
-			'theme' in localStorage && localStorage.theme === 'dark'
-		);
+			document.documentElement.classList.toggle(
+				'dark',
+				'theme' in localStorage && localStorage.theme === 'dark'
+			);
 	</script>
 </svelte:head>
 
