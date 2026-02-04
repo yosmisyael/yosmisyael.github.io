@@ -1,16 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { splash } from '$lib/stores/splash';
+	import { getWindowContext } from '$lib/context/window.svelte';
 
-	let windowWidth = $state(browser ? window.innerWidth : 1024);
-	let barCount = $derived(windowWidth < 1024 ? 4 : 8);
+	let windowContext = getWindowContext();
+	let barCount = $derived(windowContext.isMobile ? 4 : 8);
 	let barRefs: (HTMLDivElement | null)[] = $state([]);
 	let runningAnimations: Animation[] = [];
 
 	onMount(() => {
-		const handleResize = () => windowWidth = window.innerWidth;
-		window.addEventListener('resize', handleResize);
 		return () => {
 			runningAnimations.forEach(animation => animation.cancel());
 		};
