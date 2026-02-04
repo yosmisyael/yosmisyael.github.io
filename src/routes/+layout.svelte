@@ -88,7 +88,10 @@
 		return new Promise((resolve) => {
 			const runSplash = async () => {
 				await splash.startIntro();
-				await new Promise(r => setTimeout(r, 50));
+				await new Promise(r => setTimeout(r, 100));
+				if (windowContext.isMobile && $mobileMenu) {
+					mobileMenu.close();
+				}
 				resolve();
 				await navigation.complete;
 				await splash.startOutro();
