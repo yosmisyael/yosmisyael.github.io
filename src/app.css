@@ -63,29 +63,12 @@
 		z-index: 1000;
 	}
 
-	.loading-container {
-		@apply absolute left-0 right-0 top-0 bottom-0 overflow-hidden flex;
-		z-index: 99;
+	.splash-container {
+		@apply absolute flex inset-0 left-0 right-0 top-0 bottom-0 overflow-hidden z-99 pointer-events-none;
 	}
 
-	.loading-bar {
-		@apply flex-1 origin-top bg-primary-shades-60 transition-transform duration-400 ease-in-out;
-	}
-
-	.loading-bar.animate {
-		@apply scale-y-0;
-	}
-
-	.loading-bar.reverse {
-		@apply scale-y-0;
-	}
-
-	.loading-bar.reverse.animate {
-		@apply scale-y-100;
-	}
-
-	.revealed-section {
-		@apply flex-1 h-full bg-transparent pointer-events-none;
+	.splash-bar {
+		@apply flex-1 bg-primary-shades-60 origin-top will-change-transform;
 	}
 
 	.nav-item {
