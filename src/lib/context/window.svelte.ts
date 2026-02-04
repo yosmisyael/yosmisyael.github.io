@@ -7,8 +7,6 @@ export class WindowContext {
 	width = $state<number>(browser ? window.innerWidth : 1024);
 
 	isMobile = $derived<boolean>(this.width < 768);
-	isTablet = $derived<boolean>(this.width >= 768 && this.width < 1024);
-	isDesktop = $derived<boolean>(this.width >= 1024);
 
 	private cleanup?: () => void;
 
