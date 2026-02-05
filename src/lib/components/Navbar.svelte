@@ -105,12 +105,16 @@
 				let:motion
 			>
 				<button use:motion aria-label="Toggle Theme" onclick={toggleTheme}>
-					<svg
+					<!-- moon icon -->
+					{#if !$theme}
+						<svg
 						width="48"
 						height="48"
 						viewBox="0 0 34 34"
 						xmlns="http://www.w3.org/2000/svg"
 						class="h-10 hover:cursor-pointer md:h-max fill-none"
+						class:opacity-0={$theme}
+						class:opacity-100={!$theme}
 					>
 						<path
 							class="fill-complementary-light"
@@ -124,6 +128,29 @@
 							stroke-linejoin="round"
 						/>
 					</svg>
+					{:else}
+						<svg
+							width="48"
+							height="48"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+							class="size-12 hover:cursor-pointer md:h-max fill-none"
+							class:opacity-0={!$theme}
+							class:opacity-100={$theme}
+						>
+							<path
+								class="fill-complementary-light border-2 border-white"
+								d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+							/>
+							<path
+								d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+								class="stroke-primary"
+								stroke-width="1.7"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					{/if}
 				</button>
 			</Motion>
 		</div>
